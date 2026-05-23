@@ -46,6 +46,33 @@ const signals = [
   ["Need verification", "03"],
 ];
 
+const whatItDoes = [
+  {
+    title: "You enter the CNR once",
+    description:
+      "Dockethq creates a private matter workspace from the case number, title, court, status, and hearing details.",
+    icon: Search,
+  },
+  {
+    title: "The case stays organized",
+    description:
+      "Every matter keeps the next hearing, stage, verification state, notes, and activity history in one place.",
+    icon: FileCheck2,
+  },
+  {
+    title: "You know what needs attention",
+    description:
+      "The dashboard highlights upcoming hearings, cases needing review, and reminders before dates get close.",
+    icon: Bell,
+  },
+  {
+    title: "Clients and teams get clarity",
+    description:
+      "Instead of scattered WhatsApp messages and manual lists, the lawyer has one clean source of truth.",
+    icon: ShieldCheck,
+  },
+];
+
 const features = [
   {
     title: "CNR-first tracking",
@@ -96,6 +123,9 @@ export default function Page() {
           <BrandLogo className="shrink-0" />
 
           <div className="hidden items-center gap-8 text-sm font-semibold text-[#344256] md:flex">
+            <a href="#what-it-does" className="transition hover:text-[#071427]">
+              What it does
+            </a>
             <a href="#workflow" className="transition hover:text-[#071427]">
               Workflow
             </a>
@@ -241,6 +271,63 @@ export default function Page() {
                     </div>
                   );
                 })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="what-it-does" className="px-5 py-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#B58A42]">
+                What Dockethq does
+              </p>
+              <h2 className="mt-3 max-w-2xl text-4xl font-semibold tracking-tight text-[#071427] md:text-5xl">
+                It helps lawyers stop manually chasing case updates.
+              </h2>
+              <p className="mt-5 max-w-xl text-base leading-7 text-[#64748B]">
+                Dockethq is a simple litigation tracking workspace. A lawyer
+                adds a case, tracks the next hearing, checks whether the case is
+                pending, disposed, or dismissed, and sees what needs review
+                before court.
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-[#E3D6C1] bg-white/80 p-4 shadow-xl shadow-[#D9C7AA]/15">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {whatItDoes.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div
+                      key={item.title}
+                      className="rounded-md border border-[#E8DCC8] bg-[#FBF8F1] p-5"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#F0E6D6] text-[#B58A42]">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="mt-5 text-lg font-semibold text-[#071427]">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-6 text-[#64748B]">
+                        {item.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-3 rounded-md border border-[#D6C6AA] bg-[#071427] p-5 text-white">
+                <p className="text-sm font-semibold text-[#F0D6A6]">
+                  In plain words
+                </p>
+                <p className="mt-2 text-sm leading-6 text-stone-300">
+                  Dockethq is not a CRM, billing suite, or document vault first.
+                  The first job is simple: help a lawyer know which case is
+                  coming up, what changed, and what must be checked next.
+                </p>
               </div>
             </div>
           </div>
