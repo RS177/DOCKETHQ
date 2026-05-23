@@ -124,16 +124,16 @@ export default function Page() {
 
           <div className="hidden items-center gap-8 text-sm font-semibold text-[#344256] md:flex">
             <a href="#what-it-does" className="transition hover:text-[#071427]">
-              What it does
+              WHAT IT DOES
             </a>
             <a href="#workflow" className="transition hover:text-[#071427]">
-              Workflow
+              WORKFLOW
             </a>
             <a href="#trust" className="transition hover:text-[#071427]">
-              Trust
+              TRUST
             </a>
             <Link href="/terms" className="transition hover:text-[#071427]">
-              Terms
+              TERMS
             </Link>
           </div>
 
@@ -236,6 +236,17 @@ export default function Page() {
                 Dockethq turns one CNR into a focused matter workspace for case
                 status, hearing dates, verification history, and reminders.
               </p>
+
+              <div className="mt-6 max-w-2xl rounded-md border border-white/10 bg-white/[0.06] p-4 backdrop-blur">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#F0D6A6]">
+                  What this website does
+                </p>
+                <p className="mt-2 text-sm leading-6 text-stone-300">
+                  It helps lawyers add a CNR, save the matter, check case
+                  status, see the next hearing, and avoid missing important
+                  court dates from one private dashboard.
+                </p>
+              </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
