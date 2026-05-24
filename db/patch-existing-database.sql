@@ -326,9 +326,19 @@ CREATE TABLE IF NOT EXISTS reminders (
   title TEXT NOT NULL,
   remind_at TIMESTAMPTZ NOT NULL,
   channel notification_channel NOT NULL DEFAULT 'in_app',
+  recipient_email TEXT,
+  recipient_phone TEXT,
   status reminder_status NOT NULL DEFAULT 'scheduled',
+  sent_at TIMESTAMPTZ,
+  delivery_error TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE reminders
+  ADD COLUMN IF NOT EXISTS recipient_email TEXT,
+  ADD COLUMN IF NOT EXISTS recipient_phone TEXT,
+  ADD COLUMN IF NOT EXISTS sent_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS delivery_error TEXT;
 
 CREATE INDEX IF NOT EXISTS reminders_case_time_idx
   ON reminders(case_id, remind_at);

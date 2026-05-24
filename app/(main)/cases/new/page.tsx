@@ -90,6 +90,10 @@ function isValidCnr(value: string) {
   return /^[A-Z0-9]{16}$/.test(cleanCnr(value));
 }
 
+function cleanPhone(value: string) {
+  return value.replace(/[^\d+]/g, "").trim();
+}
+
 function StepCard({
   title,
   description,
@@ -199,6 +203,8 @@ export default function NewCasePage() {
   });
   const [caseTitle, setCaseTitle] = useState("");
   const [courtName, setCourtName] = useState("");
+  const [reminderEmail, setReminderEmail] = useState("");
+  const [reminderPhone, setReminderPhone] = useState("");
   const [manualMode, setManualMode] = useState(false);
   const [manualStatus, setManualStatus] = useState<CaseStatus>("pending");
   const [manualStage, setManualStage] = useState("");
@@ -294,6 +300,10 @@ export default function NewCasePage() {
           setAllowance((current) => ({ ...current, loading: false }));
         }
         return;
+      }
+
+      if (!ignore) {
+        setReminderEmail((current) => current || user.email || "");
       }
 
       const nextAllowance = await getCaseAllowance(user.id);
@@ -520,6 +530,51 @@ export default function NewCasePage() {
     }
 
     if (matterData.nextHearingDate && hasFirmWorkspace) {
+      const emailRecipient = reminderEmail.trim();
+      const phoneRecipient = cleanPhone(reminderPhone);
+      const reminderDrafts = buildHearingReminders(
+        matterData.nextHearingDate,
+        caseTitle || matterData.caseTitle || `Matter ${matterData.cnrNumber}`
+      );
+      const deliveryReminders = reminderDrafts.flatMap((reminder) => {
+        const rows: Record<string, unknown>[] = [
+          {
+            firm_id: member!.firm_id,
+            case_id: newCase.id,
+            title: reminder.title,
+            remind_at: reminder.remind_at,
+            channel: "in_app",
+            status: "scheduled",
+          },
+        ];
+
+        if (emailRecipient) {
+          rows.push({
+            firm_id: member!.firm_id,
+            case_id: newCase.id,
+            title: reminder.title,
+            remind_at: reminder.remind_at,
+            channel: "email",
+            recipient_email: emailRecipient,
+            status: "scheduled",
+          });
+        }
+
+        if (phoneRecipient) {
+          rows.push({
+            firm_id: member!.firm_id,
+            case_id: newCase.id,
+            title: reminder.title,
+            remind_at: reminder.remind_at,
+            channel: "sms",
+            recipient_phone: phoneRecipient,
+            status: "scheduled",
+          });
+        }
+
+        return rows;
+      });
+
       await supabase.from("case_hearings").insert({
         firm_id: member!.firm_id,
         case_id: newCase.id,
@@ -529,19 +584,7 @@ export default function NewCasePage() {
         created_by: user.id,
       });
 
-      await supabase.from("reminders").insert(
-        buildHearingReminders(
-          matterData.nextHearingDate,
-          caseTitle || matterData.caseTitle || `Matter ${matterData.cnrNumber}`
-        ).map((reminder) => ({
-          firm_id: member!.firm_id,
-          case_id: newCase.id,
-          title: reminder.title,
-          remind_at: reminder.remind_at,
-          channel: "in_app",
-          status: "scheduled",
-        }))
-      );
+      await supabase.from("reminders").insert(deliveryReminders);
     }
 
     if (hasFirmWorkspace) {
@@ -888,6 +931,37 @@ export default function NewCasePage() {
                   placeholder="Court name (optional)"
                   className="w-full rounded-md border border-border bg-background px-5 py-4 outline-none focus:border-primary"
                 />
+              </div>
+
+              <div className="rounded-lg border border-border bg-background p-5">
+                <div className="flex items-start gap-3">
+                  <CalendarCheck2 className="mt-1 h-5 w-5 text-muted-foreground" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold">Reminder delivery</h3>
+                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                      If a hearing date is saved, Dockethq schedules reminders
+                      7 days before, 1 day before, and on the hearing day. Email
+                      is optional; phone is optional and uses SMS when configured.
+                    </p>
+
+                    <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                      <input
+                        type="email"
+                        value={reminderEmail}
+                        onChange={(event) => setReminderEmail(event.target.value)}
+                        placeholder="Reminder email (optional)"
+                        className="w-full rounded-md border border-border bg-card px-4 py-3 outline-none focus:border-primary"
+                      />
+
+                      <input
+                        value={reminderPhone}
+                        onChange={(event) => setReminderPhone(event.target.value)}
+                        placeholder="Phone with country code (optional)"
+                        className="w-full rounded-md border border-border bg-card px-4 py-3 outline-none focus:border-primary"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <button

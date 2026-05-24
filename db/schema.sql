@@ -328,7 +328,11 @@ CREATE TABLE reminders (
     title TEXT NOT NULL,
     remind_at TIMESTAMPTZ NOT NULL,
     channel notification_channel NOT NULL DEFAULT 'in_app',
+    recipient_email TEXT,
+    recipient_phone TEXT,
     status reminder_status NOT NULL DEFAULT 'scheduled',
+    sent_at TIMESTAMPTZ,
+    delivery_error TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
