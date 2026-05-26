@@ -118,7 +118,13 @@ export const pricing = [
     price: "Free",
     annual: "Free",
     description: "For testing DocketHQ with one live matter.",
-    features: ["1 matter", "Basic docket dashboard", "Hearing reminders", "Matter history"],
+    features: [
+      "1 user",
+      "1 matter",
+      "Basic docket dashboard",
+      "Hearing reminders",
+      "Matter history",
+    ],
   },
   {
     name: "Pro",
@@ -126,6 +132,7 @@ export const pricing = [
     annual: "Rs 499",
     description: "For active litigators managing repeat matters.",
     features: [
+      "1 user",
       "Unlimited matters",
       "Document workflows",
       "Email reminders",
@@ -140,9 +147,10 @@ export const pricing = [
     description: "For firms or lawyers who want DocketHQ shaped around their practice.",
     features: [
       "Everything in Pro",
+      "Up to 5 team users",
       "Practice-specific workflow setup",
-      "Team roles and audit controls",
-      "Priority onboarding support",
+      "Case assignment and firm roles",
+      "Extra users later at Rs 199/user/mo",
     ],
   },
 ];

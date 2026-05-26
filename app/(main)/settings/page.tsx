@@ -17,6 +17,10 @@ import {
   UsersRound,
 } from "lucide-react";
 import { friendlyAuthError } from "@/app/lib/auth-errors";
+import {
+  canInviteMember,
+  userLimitForPlan,
+} from "@/app/lib/billing";
 import { supabase } from "@/app/lib/supabase";
 import {
   normalizePracticeType,
@@ -271,6 +275,31 @@ export default function AccountSettingsPage() {
 
     if (!workspace.firmId || !user || !inviteEmail.trim()) return;
 
+    const activeInviteCount = invites.filter(
+      (invite) => invite.status === "pending"
+    ).length;
+    const currentTeamUsage = members.length + activeInviteCount;
+
+    if (workspace.planType !== "enterprise") {
+      notify({
+        title: "Custom Workflow plan required",
+        description:
+          "Team invites are included in the Rs 999 Custom Workflow plan.",
+        variant: "warning",
+      });
+      return;
+    }
+
+    if (!canInviteMember(workspace.planType, currentTeamUsage)) {
+      notify({
+        title: "Team limit reached",
+        description:
+          "Custom Workflow includes up to 5 users. Extra users can be added later at Rs 199/user/month.",
+        variant: "warning",
+      });
+      return;
+    }
+
     setInviteLoading(true);
 
     const { data, error } = await supabase
@@ -345,6 +374,14 @@ export default function AccountSettingsPage() {
       </main>
     );
   }
+
+  const pendingInviteCount = invites.filter(
+    (invite) => invite.status === "pending"
+  ).length;
+  const userLimit = userLimitForPlan(workspace.planType);
+  const teamUsage = members.length + pendingInviteCount;
+  const canUseTeamInvites = workspace.planType === "enterprise";
+  const teamLimitReached = teamUsage >= userLimit;
 
   return (
     <main className="mx-auto max-w-6xl space-y-6">
@@ -621,10 +658,29 @@ export default function AccountSettingsPage() {
               <div>
                 <h2 className="text-xl font-semibold">Invite lawyers</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Queue team access for the Rs 999 custom workflow workspace.
+                  Rs 999 Custom Workflow includes up to 5 users. Extra users
+                  can be added later at Rs 199/user/month.
                 </p>
               </div>
             </div>
+
+            <div className="mt-5 rounded-md border border-border bg-background p-4">
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                Team usage
+              </p>
+              <p className="mt-2 text-2xl font-semibold">
+                {teamUsage}/{userLimit} users
+              </p>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                Counts active members plus pending invites.
+              </p>
+            </div>
+
+            {!canUseTeamInvites && (
+              <div className="mt-4 rounded-md border border-amber-300/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+                Team invites unlock on the Custom Workflow plan.
+              </div>
+            )}
 
             <form onSubmit={createInvite} className="mt-6 space-y-4">
               <input
@@ -646,7 +702,12 @@ export default function AccountSettingsPage() {
               </select>
 
               <button
-                disabled={inviteLoading || !inviteEmail.trim()}
+                disabled={
+                  inviteLoading ||
+                  !inviteEmail.trim() ||
+                  !canUseTeamInvites ||
+                  teamLimitReached
+                }
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
               >
                 {inviteLoading ? (

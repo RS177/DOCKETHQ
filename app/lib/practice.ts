@@ -61,9 +61,10 @@ export function paidPlanForPractice(value?: string | null) {
         "For chambers and small firms that want a shared workspace shaped around their litigation process.",
       features: [
         "Unlimited firm cases",
+        "Up to 5 team users included",
         "Team member invite queue",
         "Case assignment to lawyers and associates",
-        "Custom workflow setup notes",
+        "Extra users later at Rs 199/user/mo",
       ],
       subject: "Activate Dockethq Custom Workflow Plan",
     };
@@ -75,6 +76,7 @@ export function paidPlanForPractice(value?: string | null) {
     description:
       "For independent lawyers who want to track more than one personal litigation matter.",
     features: [
+      "1 user",
       "Unlimited solo cases",
       "Personal hearing reminders",
       "Verification queue for your own matters",
