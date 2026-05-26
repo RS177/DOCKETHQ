@@ -55,16 +55,17 @@ export function paidPlanForPractice(value?: string | null) {
 
   if (practiceType === "firm") {
     return {
-      name: "Practice",
-      price: "Rs 1,499/mo",
+      name: "Custom Workflow",
+      price: "Rs 999/mo",
       description:
-        "For chambers and small firms that want every active matter tracked in one shared workspace.",
+        "For chambers and small firms that want a shared workspace shaped around their litigation process.",
       features: [
         "Unlimited firm cases",
-        "Firm-level hearing reminders",
-        "Verification queue for shared matter review",
+        "Team member invite queue",
+        "Case assignment to lawyers and associates",
+        "Custom workflow setup notes",
       ],
-      subject: "Activate Dockethq Practice Plan",
+      subject: "Activate Dockethq Custom Workflow Plan",
     };
   }
 

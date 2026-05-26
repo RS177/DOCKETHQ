@@ -43,6 +43,10 @@ CREATE TABLE firms (
     court_focus TEXT,
     city TEXT,
     state TEXT,
+    lawyer_count INTEGER,
+    staff_count INTEGER,
+    practice_areas TEXT,
+    custom_workflow_notes TEXT,
     onboarding_completed_at TIMESTAMPTZ,
     terms_version TEXT,
     terms_accepted_at TIMESTAMPTZ,
@@ -62,6 +66,17 @@ CREATE TABLE firm_members (
     phone TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (firm_id, user_id)
+);
+
+CREATE TABLE firm_invites (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    firm_id UUID NOT NULL REFERENCES firms(id) ON DELETE CASCADE,
+    email TEXT NOT NULL,
+    role firm_member_role NOT NULL DEFAULT 'lawyer',
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'cancelled')),
+    invited_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (firm_id, email)
 );
 
 CREATE OR REPLACE FUNCTION handle_new_user_firm()
@@ -377,6 +392,7 @@ CREATE TABLE audit_logs (
 
 ALTER TABLE firms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE firm_members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE firm_invites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_parties ENABLE ROW LEVEL SECURITY;
@@ -394,6 +410,7 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE firms FORCE ROW LEVEL SECURITY;
 ALTER TABLE firm_members FORCE ROW LEVEL SECURITY;
+ALTER TABLE firm_invites FORCE ROW LEVEL SECURITY;
 ALTER TABLE clients FORCE ROW LEVEL SECURITY;
 ALTER TABLE cases FORCE ROW LEVEL SECURITY;
 ALTER TABLE case_parties FORCE ROW LEVEL SECURITY;
@@ -449,6 +466,13 @@ CREATE POLICY "Members can update their firms" ON firms
 
 CREATE POLICY "Members can view firm members" ON firm_members
     FOR SELECT USING (is_firm_member(firm_id));
+
+CREATE POLICY "Members can view firm invites" ON firm_invites
+    FOR SELECT USING (is_firm_member(firm_id));
+
+CREATE POLICY "Members can manage firm invites" ON firm_invites
+    FOR ALL USING (is_firm_member(firm_id))
+    WITH CHECK (is_firm_member(firm_id));
 
 CREATE POLICY "Members can view firm clients" ON clients
     FOR SELECT USING (is_firm_member(firm_id));

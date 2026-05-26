@@ -5,12 +5,16 @@ import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import {
   Building2,
+  ClipboardList,
   CreditCard,
   KeyRound,
   Loader2,
+  Mail,
   type LucideIcon,
   Save,
+  UserPlus,
   UserRound,
+  UsersRound,
 } from "lucide-react";
 import { friendlyAuthError } from "@/app/lib/auth-errors";
 import { supabase } from "@/app/lib/supabase";
@@ -31,6 +35,22 @@ type Workspace = {
   planType: string;
 };
 
+type FirmMember = {
+  id: string;
+  role: string;
+  display_name: string | null;
+  phone: string | null;
+  created_at: string;
+};
+
+type FirmInvite = {
+  id: string;
+  email: string;
+  role: string;
+  status: string;
+  created_at: string;
+};
+
 function label(value?: string | null) {
   return value ? value.replaceAll("_", " ") : "Not set";
 }
@@ -41,6 +61,17 @@ export default function AccountSettingsPage() {
   const [fullName, setFullName] = useState("");
   const [firmName, setFirmName] = useState("");
   const [practiceType, setPracticeType] = useState<PracticeType>("solo");
+  const [courtFocus, setCourtFocus] = useState("");
+  const [city, setCity] = useState("");
+  const [lawyerCount, setLawyerCount] = useState("");
+  const [staffCount, setStaffCount] = useState("");
+  const [practiceAreas, setPracticeAreas] = useState("");
+  const [workflowNotes, setWorkflowNotes] = useState("");
+  const [members, setMembers] = useState<FirmMember[]>([]);
+  const [invites, setInvites] = useState<FirmInvite[]>([]);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("lawyer");
+  const [inviteLoading, setInviteLoading] = useState(false);
   const [workspace, setWorkspace] = useState<Workspace>({
     memberId: null,
     firmId: null,
@@ -113,6 +144,29 @@ export default function AccountSettingsPage() {
       });
       setFirmName(resolvedFirmName);
       setPracticeType(resolvedPracticeType);
+      setCourtFocus(firm?.court_focus || "");
+      setCity(firm?.city || "");
+      setLawyerCount(firm?.lawyer_count ? String(firm.lawyer_count) : "");
+      setStaffCount(firm?.staff_count ? String(firm.staff_count) : "");
+      setPracticeAreas(firm?.practice_areas || "");
+      setWorkflowNotes(firm?.custom_workflow_notes || "");
+
+      const { data: memberRows } = await supabase
+        .from("firm_members")
+        .select("id,role,display_name,phone,created_at")
+        .eq("firm_id", member.firm_id)
+        .order("created_at", { ascending: true });
+
+      const { data: inviteRows } = await supabase
+        .from("firm_invites")
+        .select("id,email,role,status,created_at")
+        .eq("firm_id", member.firm_id)
+        .order("created_at", { ascending: false });
+
+      if (ignore) return;
+
+      setMembers((memberRows || []) as FirmMember[]);
+      setInvites((inviteRows || []) as FirmInvite[]);
       setLoading(false);
     }
 
@@ -163,6 +217,12 @@ export default function AccountSettingsPage() {
         .update({
           name: firmName.trim(),
           practice_type: practiceType,
+          court_focus: courtFocus.trim() || null,
+          city: city.trim() || null,
+          lawyer_count: lawyerCount ? Number(lawyerCount) : null,
+          staff_count: staffCount ? Number(staffCount) : null,
+          practice_areas: practiceAreas.trim() || null,
+          custom_workflow_notes: workflowNotes.trim() || null,
           updated_at: new Date().toISOString(),
         })
         .eq("id", workspace.firmId);
@@ -172,6 +232,8 @@ export default function AccountSettingsPage() {
           .from("firms")
           .update({
             name: firmName.trim(),
+            court_focus: courtFocus.trim() || null,
+            city: city.trim() || null,
             updated_at: new Date().toISOString(),
           })
           .eq("id", workspace.firmId);
@@ -200,6 +262,47 @@ export default function AccountSettingsPage() {
     notify({
       title: "Settings saved",
       description: "Your profile and workspace details are up to date.",
+      variant: "success",
+    });
+  }
+
+  async function createInvite(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!workspace.firmId || !user || !inviteEmail.trim()) return;
+
+    setInviteLoading(true);
+
+    const { data, error } = await supabase
+      .from("firm_invites")
+      .insert({
+        firm_id: workspace.firmId,
+        email: inviteEmail.trim().toLowerCase(),
+        role: inviteRole,
+        invited_by: user.id,
+      })
+      .select("id,email,role,status,created_at")
+      .single();
+
+    setInviteLoading(false);
+
+    if (error) {
+      notify({
+        title: "Could not create invite",
+        description:
+          error.message ||
+          "Check that the invite table patch has been run in Supabase.",
+        variant: "error",
+      });
+      return;
+    }
+
+    setInvites((current) => [data as FirmInvite, ...current]);
+    setInviteEmail("");
+    notify({
+      title: "Invite queued",
+      description:
+        "This team member is now in the invite queue. Email delivery can be connected next.",
       variant: "success",
     });
   }
@@ -368,6 +471,77 @@ export default function AccountSettingsPage() {
                 }
               />
             </label>
+
+            {practiceType === "firm" && (
+              <>
+                <label className="space-y-2">
+                  <span className="text-sm font-medium">Primary courts</span>
+                  <input
+                    value={courtFocus}
+                    onChange={(event) => setCourtFocus(event.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                    placeholder="High Court, District Court, NCLT"
+                  />
+                </label>
+
+                <label className="space-y-2">
+                  <span className="text-sm font-medium">City</span>
+                  <input
+                    value={city}
+                    onChange={(event) => setCity(event.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                    placeholder="Bengaluru"
+                  />
+                </label>
+
+                <label className="space-y-2">
+                  <span className="text-sm font-medium">Lawyers</span>
+                  <input
+                    type="number"
+                    min="1"
+                    value={lawyerCount}
+                    onChange={(event) => setLawyerCount(event.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                    placeholder="4"
+                  />
+                </label>
+
+                <label className="space-y-2">
+                  <span className="text-sm font-medium">Associates / staff</span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={staffCount}
+                    onChange={(event) => setStaffCount(event.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                    placeholder="6"
+                  />
+                </label>
+
+                <label className="space-y-2 sm:col-span-2">
+                  <span className="text-sm font-medium">Practice areas</span>
+                  <input
+                    value={practiceAreas}
+                    onChange={(event) => setPracticeAreas(event.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                    placeholder="Civil, commercial, arbitration, recovery"
+                  />
+                </label>
+
+                <label className="space-y-2 sm:col-span-2">
+                  <span className="text-sm font-medium">
+                    Custom workflow notes
+                  </span>
+                  <textarea
+                    value={workflowNotes}
+                    onChange={(event) => setWorkflowNotes(event.target.value)}
+                    rows={4}
+                    className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                    placeholder="How does the firm assign cases, review filings, remind clients, and prepare for hearings?"
+                  />
+                </label>
+              </>
+            )}
           </div>
 
           <button
@@ -438,6 +612,113 @@ export default function AccountSettingsPage() {
           </div>
         </div>
       </section>
+
+      {workspace.practiceType === "firm" && (
+        <section className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
+          <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <UserPlus className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <h2 className="text-xl font-semibold">Invite lawyers</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Queue team access for the Rs 999 custom workflow workspace.
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={createInvite} className="mt-6 space-y-4">
+              <input
+                type="email"
+                value={inviteEmail}
+                onChange={(event) => setInviteEmail(event.target.value)}
+                className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+                placeholder="lawyer@firm.com"
+              />
+
+              <select
+                value={inviteRole}
+                onChange={(event) => setInviteRole(event.target.value)}
+                className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+              >
+                <option value="admin">Admin</option>
+                <option value="lawyer">Lawyer</option>
+                <option value="associate">Associate</option>
+              </select>
+
+              <button
+                disabled={inviteLoading || !inviteEmail.trim()}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+              >
+                {inviteLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Mail className="h-4 w-4" />
+                )}
+                {inviteLoading ? "Queuing..." : "Queue Invite"}
+              </button>
+            </form>
+          </div>
+
+          <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <UsersRound className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <h2 className="text-xl font-semibold">Team workspace</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Members and pending invites for case assignment.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3">
+              {members.length === 0 ? (
+                <p className="rounded-md border border-border bg-background p-4 text-sm text-muted-foreground">
+                  No team members loaded yet.
+                </p>
+              ) : (
+                members.map((member) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between gap-3 rounded-md border border-border bg-background p-4"
+                  >
+                    <div>
+                      <p className="font-semibold">
+                        {member.display_name || "Team member"}
+                      </p>
+                      <p className="mt-1 text-xs capitalize text-muted-foreground">
+                        {label(member.role)}
+                      </p>
+                    </div>
+                    <ClipboardList className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                ))
+              )}
+            </div>
+
+            {invites.length > 0 && (
+              <div className="mt-6 border-t border-border pt-5">
+                <p className="text-sm font-semibold">Pending invites</p>
+                <div className="mt-3 grid gap-3">
+                  {invites.map((invite) => (
+                    <div
+                      key={invite.id}
+                      className="flex items-center justify-between gap-3 rounded-md border border-border bg-background p-4"
+                    >
+                      <div>
+                        <p className="font-semibold">{invite.email}</p>
+                        <p className="mt-1 text-xs capitalize text-muted-foreground">
+                          {label(invite.role)} - {label(invite.status)}
+                        </p>
+                      </div>
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

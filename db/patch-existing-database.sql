@@ -82,6 +82,10 @@ ALTER TABLE firms
   ADD COLUMN IF NOT EXISTS court_focus TEXT,
   ADD COLUMN IF NOT EXISTS city TEXT,
   ADD COLUMN IF NOT EXISTS state TEXT,
+  ADD COLUMN IF NOT EXISTS lawyer_count INTEGER,
+  ADD COLUMN IF NOT EXISTS staff_count INTEGER,
+  ADD COLUMN IF NOT EXISTS practice_areas TEXT,
+  ADD COLUMN IF NOT EXISTS custom_workflow_notes TEXT,
   ADD COLUMN IF NOT EXISTS onboarding_completed_at TIMESTAMPTZ,
   ADD COLUMN IF NOT EXISTS terms_version TEXT,
   ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ,
@@ -112,6 +116,30 @@ CREATE TABLE IF NOT EXISTS firm_members (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (firm_id, user_id)
 );
+
+CREATE TABLE IF NOT EXISTS firm_invites (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  firm_id UUID NOT NULL REFERENCES firms(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  role firm_member_role NOT NULL DEFAULT 'lawyer',
+  status TEXT NOT NULL DEFAULT 'pending',
+  invited_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (firm_id, email)
+);
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conname = 'firm_invites_status_check'
+  ) THEN
+    ALTER TABLE firm_invites
+      ADD CONSTRAINT firm_invites_status_check
+      CHECK (status IN ('pending', 'accepted', 'cancelled'));
+  END IF;
+END $$;
 
 CREATE OR REPLACE FUNCTION handle_new_user_firm()
 RETURNS TRIGGER
@@ -359,6 +387,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 
 ALTER TABLE firms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE firm_members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE firm_invites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_snapshots ENABLE ROW LEVEL SECURITY;
@@ -368,6 +397,7 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE firms FORCE ROW LEVEL SECURITY;
 ALTER TABLE firm_members FORCE ROW LEVEL SECURITY;
+ALTER TABLE firm_invites FORCE ROW LEVEL SECURITY;
 ALTER TABLE cases FORCE ROW LEVEL SECURITY;
 ALTER TABLE case_events FORCE ROW LEVEL SECURITY;
 ALTER TABLE case_snapshots FORCE ROW LEVEL SECURITY;
@@ -409,6 +439,8 @@ $$;
 DROP POLICY IF EXISTS "Members can view their firms" ON firms;
 DROP POLICY IF EXISTS "Members can update their firms" ON firms;
 DROP POLICY IF EXISTS "Members can view firm members" ON firm_members;
+DROP POLICY IF EXISTS "Members can view firm invites" ON firm_invites;
+DROP POLICY IF EXISTS "Members can manage firm invites" ON firm_invites;
 DROP POLICY IF EXISTS "Members can view firm cases" ON cases;
 DROP POLICY IF EXISTS "Members can manage firm cases" ON cases;
 DROP POLICY IF EXISTS "Members can manage firm events" ON case_events;
@@ -429,6 +461,13 @@ CREATE POLICY "Members can update their firms" ON firms
 
 CREATE POLICY "Members can view firm members" ON firm_members
   FOR SELECT USING (is_firm_member(firm_id));
+
+CREATE POLICY "Members can view firm invites" ON firm_invites
+  FOR SELECT USING (is_firm_member(firm_id));
+
+CREATE POLICY "Members can manage firm invites" ON firm_invites
+  FOR ALL USING (is_firm_member(firm_id))
+  WITH CHECK (is_firm_member(firm_id));
 
 CREATE POLICY "Members can view firm cases" ON cases
   FOR SELECT USING (can_access_case(cases));

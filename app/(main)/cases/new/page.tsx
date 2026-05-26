@@ -16,6 +16,7 @@ import {
   Search,
   ShieldCheck,
   Sparkles,
+  UsersRound,
   XCircle,
 } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
@@ -66,6 +67,12 @@ type CaseAllowance = {
   loading: boolean;
 };
 
+type TeamMember = {
+  id: string;
+  role: string;
+  display_name: string | null;
+};
+
 function statusTone(status: CourtLookup["data"]["status"]) {
   if (status === "dismissed") {
     return "border-red-500/20 bg-red-500/10 text-red-200";
@@ -92,6 +99,10 @@ function isValidCnr(value: string) {
 
 function cleanPhone(value: string) {
   return value.replace(/[^\d+]/g, "").trim();
+}
+
+function labelMember(role: string) {
+  return role.replaceAll("_", " ");
 }
 
 function StepCard({
@@ -210,6 +221,9 @@ export default function NewCasePage() {
   const [manualStage, setManualStage] = useState("");
   const [manualNextHearingDate, setManualNextHearingDate] = useState("");
   const [manualJudgeName, setManualJudgeName] = useState("");
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [assignedLawyerId, setAssignedLawyerId] = useState("");
+  const [assignedAssociateId, setAssignedAssociateId] = useState("");
   const [lookup, setLookup] = useState<CourtLookup | null>(null);
   const [lookupError, setLookupError] = useState<CourtLookupError | null>(null);
   const [lookupLoading, setLookupLoading] = useState(false);
@@ -304,6 +318,25 @@ export default function NewCasePage() {
 
       if (!ignore) {
         setReminderEmail((current) => current || user.email || "");
+      }
+
+      const { data: member } = await supabase
+        .from("firm_members")
+        .select("firm_id")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+
+      if (member?.firm_id) {
+        const { data: memberRows } = await supabase
+          .from("firm_members")
+          .select("id,role,display_name")
+          .eq("firm_id", member.firm_id)
+          .order("created_at", { ascending: true });
+
+        if (!ignore) {
+          setTeamMembers((memberRows || []) as TeamMember[]);
+        }
       }
 
       const nextAllowance = await getCaseAllowance(user.id);
@@ -460,6 +493,8 @@ export default function NewCasePage() {
         verification_status: autoLookup ? "auto_synced" : "needs_review",
         last_synced_at: autoLookup ? new Date().toISOString() : null,
         last_sync_status: autoLookup ? "success" : null,
+        assigned_lawyer_id: assignedLawyerId || null,
+        assigned_associate_id: assignedAssociateId || null,
         created_by: user.id,
       }
       : {
@@ -932,6 +967,63 @@ export default function NewCasePage() {
                   className="w-full rounded-md border border-border bg-background px-5 py-4 outline-none focus:border-primary"
                 />
               </div>
+
+              {teamMembers.length > 0 && (
+                <div className="rounded-lg border border-border bg-background p-5">
+                  <div className="flex items-start gap-3">
+                    <UsersRound className="mt-1 h-5 w-5 text-muted-foreground" />
+                    <div className="flex-1">
+                      <h3 className="font-semibold">Firm assignment</h3>
+                      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                        Assign this matter to the lawyer and associate who will
+                        be responsible for hearing prep and follow-up.
+                      </p>
+
+                      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                        <select
+                          value={assignedLawyerId}
+                          onChange={(event) =>
+                            setAssignedLawyerId(event.target.value)
+                          }
+                          className="w-full rounded-md border border-border bg-card px-4 py-3 outline-none focus:border-primary"
+                        >
+                          <option value="">Responsible lawyer</option>
+                          {teamMembers
+                            .filter((member) =>
+                              ["owner", "admin", "lawyer"].includes(member.role)
+                            )
+                            .map((member) => (
+                              <option key={member.id} value={member.id}>
+                                {member.display_name || labelMember(member.role)}
+                              </option>
+                            ))}
+                        </select>
+
+                        <select
+                          value={assignedAssociateId}
+                          onChange={(event) =>
+                            setAssignedAssociateId(event.target.value)
+                          }
+                          className="w-full rounded-md border border-border bg-card px-4 py-3 outline-none focus:border-primary"
+                        >
+                          <option value="">Associate / staff</option>
+                          {teamMembers
+                            .filter((member) =>
+                              ["associate", "lawyer", "admin"].includes(
+                                member.role
+                              )
+                            )
+                            .map((member) => (
+                              <option key={member.id} value={member.id}>
+                                {member.display_name || labelMember(member.role)}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="rounded-lg border border-border bg-background p-5">
                 <div className="flex items-start gap-3">
