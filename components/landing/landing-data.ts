@@ -122,8 +122,8 @@ export const pricing = [
   },
   {
     name: "Pro",
-    price: "₹999",
-    annual: "₹799",
+    price: "Rs 499",
+    annual: "Rs 499",
     description: "For active litigators managing repeat matters.",
     features: [
       "Unlimited matters",
@@ -134,15 +134,15 @@ export const pricing = [
     recommended: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    annual: "Custom",
-    description: "For firms and in-house legal teams.",
+    name: "Custom Workflow",
+    price: "Rs 999",
+    annual: "Rs 999",
+    description: "For firms or lawyers who want DocketHQ shaped around their practice.",
     features: [
-      "Team roles",
-      "Audit controls",
-      "Client update workflows",
-      "Priority onboarding",
+      "Everything in Pro",
+      "Practice-specific workflow setup",
+      "Team roles and audit controls",
+      "Priority onboarding support",
     ],
   },
 ];

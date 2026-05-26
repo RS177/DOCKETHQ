@@ -17,7 +17,7 @@ export function PricingSection() {
               Pricing
             </p>
             <h2 className="mt-4 max-w-3xl text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[0.98] tracking-tight text-[#0A0F1E]">
-              Start lean. Scale when the docket grows.
+            Start lean. Add custom workflow when the practice needs it.
             </h2>
           </div>
 
@@ -63,7 +63,7 @@ export function PricingSection() {
               </p>
               <p className="mt-8 text-5xl font-semibold">
                 {annual ? plan.annual : plan.price}
-                {plan.price !== "Free" && plan.price !== "Custom" && (
+                {plan.price !== "Free" && (
                   <span className="text-base font-medium opacity-60">/mo</span>
                 )}
               </p>
@@ -78,14 +78,14 @@ export function PricingSection() {
               </ul>
 
               <Link
-                href={plan.name === "Enterprise" ? "#demo" : "/signup?redirectTo=/onboarding"}
+                href={plan.name === "Custom Workflow" ? "#demo" : "/signup?redirectTo=/onboarding"}
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-md px-5 py-3 font-bold transition hover:-translate-y-0.5 ${
                   plan.recommended
                     ? "bg-[#2D6BFF] text-white"
                     : "bg-[#0A0F1E] text-white"
                 }`}
               >
-                {plan.name === "Enterprise" ? "Book a demo" : "Start free trial"}
+                {plan.name === "Custom Workflow" ? "Plan custom workflow" : "Start free trial"}
               </Link>
             </article>
           ))}
