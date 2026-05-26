@@ -13,8 +13,7 @@ export function HowItWorksSection() {
           </h2>
         </div>
 
-        <div className="relative mt-14 grid gap-5 lg:grid-cols-3">
-          <div className="absolute left-0 top-10 hidden h-px w-full bg-gradient-to-r from-[#D4A843] via-[#2D6BFF] to-transparent lg:block" />
+        <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
