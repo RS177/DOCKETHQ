@@ -19,15 +19,6 @@ import {
   Zap,
 } from "lucide-react";
 
-export const firmLogos = [
-  "Banyan Chambers",
-  "LexBridge",
-  "Northstar Legal",
-  "Verdict Labs",
-  "Aurum Counsel",
-  "Pillar Law",
-];
-
 export const problemPoints = [
   {
     title: "Dates live in too many places",
@@ -118,34 +109,6 @@ export const steps = [
     title: "Audit the outcome",
     copy: "Every update, reminder, filing, and handoff becomes part of the case history.",
     icon: History,
-  },
-];
-
-export const metrics = [
-  { label: "cases managed", value: 10000, suffix: "+" },
-  { label: "faster filing prep", value: 3, prefix: "", suffix: "x" },
-  { label: "uptime target", value: 99.9, suffix: "%" },
-  { label: "deadline checks daily", value: 24000, suffix: "+" },
-];
-
-export const testimonials = [
-  {
-    quote:
-      "DocketHQ gives us one litigation truth: the date, the owner, the document, and the next action.",
-    name: "Ananya Mehta",
-    role: "Litigation Partner",
-  },
-  {
-    quote:
-      "The strongest part is the audit trail. We can reconstruct a matter without chasing five people.",
-    name: "Rohan Sinha",
-    role: "Head of Legal Ops",
-  },
-  {
-    quote:
-      "For a solo practice, the dashboard feels like having a disciplined clerk who never forgets the next date.",
-    name: "Priya Rao",
-    role: "Independent Advocate",
   },
 ];
 

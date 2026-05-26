@@ -6,12 +6,9 @@ import { FinalCtaSection } from "./final-cta-section";
 import { HeroSection } from "./hero-section";
 import { HowItWorksSection } from "./how-it-works-section";
 import { LandingFooter } from "./landing-footer";
-import { MetricsSection } from "./metrics-section";
 import { PricingSection } from "./pricing-section";
 import { ProblemSolutionSection } from "./problem-solution-section";
 import { ResourcesSection } from "./resources-section";
-import { SocialProofSection } from "./social-proof-section";
-import { TestimonialsSection } from "./testimonials-section";
 
 export function LandingPage() {
   useEffect(() => {
@@ -35,12 +32,9 @@ export function LandingPage() {
   return (
     <main className="min-h-screen bg-[#F8F7F4] text-[#0A0F1E]">
       <HeroSection />
-      <SocialProofSection />
       <ProblemSolutionSection />
       <FeaturesSection />
       <HowItWorksSection />
-      <MetricsSection />
-      <TestimonialsSection />
       <PricingSection />
       <ResourcesSection />
       <FinalCtaSection />
