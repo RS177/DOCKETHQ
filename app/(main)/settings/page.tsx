@@ -303,37 +303,51 @@ export default function AccountSettingsPage() {
 
     setInviteLoading(true);
 
-    const { data, error } = await supabase
-      .from("firm_invites")
-      .insert({
-        firm_id: workspace.firmId,
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const response = await fetch("/api/invites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.access_token || ""}`,
+      },
+      body: JSON.stringify({
         email: inviteEmail.trim().toLowerCase(),
         role: inviteRole,
-        invited_by: user.id,
-      })
-      .select("id,email,role,status,created_at")
-      .single();
+      }),
+    });
+
+    const result = (await response.json().catch(() => ({}))) as {
+      invite?: FirmInvite;
+      email_sent?: boolean;
+      email_error?: string | null;
+      error?: string;
+    };
 
     setInviteLoading(false);
 
-    if (error) {
+    if (!response.ok || !result.invite) {
       notify({
         title: "Could not create invite",
         description:
-          error.message ||
-          "Check that the invite table patch has been run in Supabase.",
+          result.error ||
+          "Check that the invite table patch and email settings are configured.",
         variant: "error",
       });
       return;
     }
 
-    setInvites((current) => [data as FirmInvite, ...current]);
+    setInvites((current) => [result.invite as FirmInvite, ...current]);
     setInviteEmail("");
     notify({
-      title: "Invite queued",
-      description:
-        "This team member is now in the invite queue. Email delivery can be connected next.",
-      variant: "success",
+      title: result.email_sent ? "Invite email sent" : "Invite queued",
+      description: result.email_sent
+        ? "The team member has received a secure workspace invite."
+        : result.email_error ||
+          "The invite was created. Copy the invite link and send it manually.",
+      variant: result.email_sent ? "success" : "warning",
     });
   }
 
