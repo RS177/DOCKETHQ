@@ -691,7 +691,7 @@ export default function AccountSettingsPage() {
             </div>
 
             {!canUseTeamInvites && (
-              <div className="mt-4 rounded-md border border-amber-300/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+              <div className="mt-4 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm font-medium text-amber-900">
                 Team invites unlock on the Custom Workflow plan.
               </div>
             )}
