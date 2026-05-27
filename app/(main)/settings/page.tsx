@@ -24,6 +24,7 @@ import {
 } from "@/app/lib/billing";
 import { supabase } from "@/app/lib/supabase";
 import {
+  effectivePracticeType,
   normalizePracticeType,
   practiceLabel,
   type PracticeType,
@@ -135,8 +136,9 @@ export default function AccountSettingsPage() {
       if (ignore) return;
 
       const resolvedFirmName = firm?.name || authFirmName || "Firm workspace";
-      const resolvedPracticeType = normalizePracticeType(
-        firm?.practice_type || authPracticeType
+      const resolvedPracticeType = effectivePracticeType(
+        firm?.practice_type || authPracticeType,
+        firm?.plan_type
       );
 
       setWorkspace({

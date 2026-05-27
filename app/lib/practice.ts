@@ -5,11 +5,22 @@ export function normalizePracticeType(value?: string | null): PracticeType {
 }
 
 export function practiceLabel(value?: string | null) {
-  return normalizePracticeType(value) === "firm" ? "Firm owner" : "Solo practice";
+  return normalizePracticeType(value) === "firm" ? "Firm practice" : "Solo practice";
 }
 
 export function workspaceLabel(value?: string | null) {
   return normalizePracticeType(value) === "firm" ? "Firm workspace" : "Solo workspace";
+}
+
+export function effectivePracticeType(
+  practiceType?: string | null,
+  planType?: string | null
+): PracticeType {
+  if (planType === "enterprise") {
+    return "firm";
+  }
+
+  return normalizePracticeType(practiceType);
 }
 
 export function dashboardCopy(value?: string | null) {

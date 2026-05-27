@@ -19,6 +19,7 @@ import { supabase } from "@/app/lib/supabase";
 import { buildHearingReminders } from "@/app/lib/reminders";
 import {
   dashboardCopy,
+  effectivePracticeType,
   normalizePracticeType,
   practiceLabel,
   type PracticeType,
@@ -271,8 +272,9 @@ export default function DashboardPage() {
                 firm?.name ||
                 user.user_metadata?.firm_name ||
                 "Dockethq workspace",
-              practiceType: normalizePracticeType(
-                firm?.practice_type || user.user_metadata?.practice_type
+              practiceType: effectivePracticeType(
+                firm?.practice_type || user.user_metadata?.practice_type,
+                firm?.plan_type
               ),
               role: member.role || "owner",
               planType: firm?.plan_type || "free",

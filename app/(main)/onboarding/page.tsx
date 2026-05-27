@@ -17,6 +17,7 @@ import {
 import { friendlyAuthError } from "@/app/lib/auth-errors";
 import { supabase } from "@/app/lib/supabase";
 import {
+  effectivePracticeType,
   normalizePracticeType,
   practiceLabel,
   type PracticeType,
@@ -98,8 +99,9 @@ export default function OnboardingPage() {
             firm?.name ||
             currentUser.user_metadata?.firm_name ||
             "Dockethq workspace",
-          practiceType: normalizePracticeType(
-            firm?.practice_type || currentUser.user_metadata?.practice_type
+          practiceType: effectivePracticeType(
+            firm?.practice_type || currentUser.user_metadata?.practice_type,
+            firm?.plan_type
           ),
         });
       } else {

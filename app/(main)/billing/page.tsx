@@ -16,6 +16,7 @@ import {
   type PlanType,
 } from "@/app/lib/billing";
 import {
+  effectivePracticeType,
   normalizePracticeType,
   paidPlanForPractice,
   practiceLabel,
@@ -82,8 +83,9 @@ export default function BillingPage() {
         if (!ignore) {
           setBilling({
             planType: normalizePlanType(firm?.plan_type),
-            practiceType: normalizePracticeType(
-              firm?.practice_type || user.user_metadata?.practice_type
+            practiceType: effectivePracticeType(
+              firm?.practice_type || user.user_metadata?.practice_type,
+              firm?.plan_type
             ),
             firmName:
               firm?.name ||

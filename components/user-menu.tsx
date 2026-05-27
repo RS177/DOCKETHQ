@@ -14,7 +14,11 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { supabase } from "@/app/lib/supabase";
-import { normalizePracticeType, practiceLabel, type PracticeType } from "@/app/lib/practice";
+import {
+  effectivePracticeType,
+  practiceLabel,
+  type PracticeType,
+} from "@/app/lib/practice";
 import { getUserDisplayName, UserAvatar } from "./user-avatar";
 
 type WorkspaceProfile = {
@@ -76,8 +80,9 @@ export function UserMenu() {
           firm?.name ||
           currentUser.user_metadata?.firm_name ||
           "Firm workspace",
-        practiceType: normalizePracticeType(
-          firm?.practice_type || currentUser.user_metadata?.practice_type
+        practiceType: effectivePracticeType(
+          firm?.practice_type || currentUser.user_metadata?.practice_type,
+          firm?.plan_type
         ),
         role: member.role || "owner",
         planType: firm?.plan_type || "free",
