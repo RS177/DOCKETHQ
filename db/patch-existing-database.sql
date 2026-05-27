@@ -223,11 +223,11 @@ BEGIN
   ) THEN
     UPDATE cases
     SET status = CASE
-      WHEN LOWER(current_status) LIKE '%dismiss%' THEN 'dismissed'::case_status
-      WHEN LOWER(current_status) LIKE '%disposed%' THEN 'disposed'::case_status
-      WHEN LOWER(current_status) LIKE '%stay%' THEN 'stayed'::case_status
-      WHEN LOWER(current_status) LIKE '%pending%' THEN 'pending'::case_status
-      ELSE status
+      WHEN LOWER(current_status) LIKE '%dismiss%' THEN 'dismissed'
+      WHEN LOWER(current_status) LIKE '%disposed%' THEN 'disposed'
+      WHEN LOWER(current_status) LIKE '%stay%' THEN 'stayed'
+      WHEN LOWER(current_status) LIKE '%pending%' THEN 'pending'
+      ELSE COALESCE(status::text, 'unknown')
     END;
   END IF;
 
