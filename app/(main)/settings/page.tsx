@@ -6,6 +6,7 @@ import type { User } from "@supabase/supabase-js";
 import {
   Building2,
   ClipboardList,
+  Copy,
   CreditCard,
   KeyRound,
   Loader2,
@@ -332,6 +333,19 @@ export default function AccountSettingsPage() {
       title: "Invite queued",
       description:
         "This team member is now in the invite queue. Email delivery can be connected next.",
+      variant: "success",
+    });
+  }
+
+  async function copyInviteLink(inviteId: string) {
+    const origin =
+      typeof window === "undefined" ? "" : window.location.origin;
+    const inviteLink = `${origin}/invite/${inviteId}`;
+
+    await navigator.clipboard.writeText(inviteLink);
+    notify({
+      title: "Invite link copied",
+      description: "Send this link to the team member you invited.",
       variant: "success",
     });
   }
@@ -771,7 +785,14 @@ export default function AccountSettingsPage() {
                           {label(invite.role)} - {label(invite.status)}
                         </p>
                       </div>
-                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <button
+                        type="button"
+                        onClick={() => copyInviteLink(invite.id)}
+                        className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-semibold transition hover:bg-accent"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                        Copy link
+                      </button>
                     </div>
                   ))}
                 </div>
