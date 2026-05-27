@@ -26,6 +26,7 @@ type WorkspaceProfile = {
   practiceType: PracticeType;
   role: string;
   planType: string;
+  ready: boolean;
 };
 
 function niceLabel(value?: string | null) {
@@ -38,10 +39,11 @@ export function UserMenu() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [workspace, setWorkspace] = useState<WorkspaceProfile>({
-    firmName: "Firm workspace",
+    firmName: "Workspace",
     practiceType: "solo",
-    role: "owner",
+    role: "Loading",
     planType: "free",
+    ready: false,
   });
 
   useEffect(() => {
@@ -65,7 +67,19 @@ export function UserMenu() {
         .limit(1)
         .maybeSingle();
 
-      if (!member?.firm_id || ignore) return;
+      if (!member?.firm_id || ignore) {
+        setWorkspace({
+          firmName: currentUser.user_metadata?.firm_name || "Solo workspace",
+          practiceType: effectivePracticeType(
+            currentUser.user_metadata?.practice_type,
+            currentUser.user_metadata?.plan_type
+          ),
+          role: "owner",
+          planType: currentUser.user_metadata?.plan_type || "free",
+          ready: true,
+        });
+        return;
+      }
 
       const { data: firm } = await supabase
         .from("firms")
@@ -86,6 +100,7 @@ export function UserMenu() {
         ),
         role: member.role || "owner",
         planType: firm?.plan_type || "free",
+        ready: true,
       });
     }
 
@@ -151,7 +166,9 @@ export function UserMenu() {
                   Practice
                 </span>
                 <span className="max-w-36 truncate font-medium">
-                  {practiceLabel(workspace.practiceType)}
+                  {workspace.ready
+                    ? practiceLabel(workspace.practiceType)
+                    : "Loading..."}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3">
@@ -160,7 +177,7 @@ export function UserMenu() {
                   Workspace
                 </span>
                 <span className="max-w-36 truncate font-medium">
-                  {workspace.firmName}
+                  {workspace.ready ? workspace.firmName : "Loading..."}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3">
@@ -168,7 +185,9 @@ export function UserMenu() {
                   <ShieldCheck className="h-3.5 w-3.5" />
                   Role
                 </span>
-                <span className="capitalize">{niceLabel(workspace.role)}</span>
+                <span className="capitalize">
+                  {workspace.ready ? niceLabel(workspace.role) : "Loading..."}
+                </span>
               </div>
             </div>
           </div>
