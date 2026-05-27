@@ -64,7 +64,7 @@ export function paidPlanForPractice(value?: string | null) {
         "Up to 5 team users included",
         "Team member invite queue",
         "Case assignment to lawyers and associates",
-        "Extra users later at Rs 199/user/mo",
+        "Extra users at Rs 97/user/mo",
       ],
       subject: "Activate Dockethq Custom Workflow Plan",
     };

@@ -150,7 +150,7 @@ export const pricing = [
       "Up to 5 team users",
       "Practice-specific workflow setup",
       "Case assignment and firm roles",
-      "Extra users later at Rs 199/user/mo",
+      "Extra users at Rs 97/user/mo",
     ],
   },
 ];

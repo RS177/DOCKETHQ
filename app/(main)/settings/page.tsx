@@ -295,7 +295,7 @@ export default function AccountSettingsPage() {
       notify({
         title: "Team limit reached",
         description:
-          "Custom Workflow includes up to 5 users. Extra users can be added later at Rs 199/user/month.",
+          "Custom Workflow includes up to 5 users. Extra users can be added at Rs 97/user/month.",
         variant: "warning",
       });
       return;
@@ -673,7 +673,7 @@ export default function AccountSettingsPage() {
                 <h2 className="text-xl font-semibold">Invite lawyers</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Rs 999 Custom Workflow includes up to 5 users. Extra users
-                  can be added later at Rs 199/user/month.
+                  can be added at Rs 97/user/month.
                 </p>
               </div>
             </div>
