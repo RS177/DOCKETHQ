@@ -29,37 +29,37 @@ export function dashboardCopy(value?: string | null) {
   if (practiceType === "firm") {
     return {
       badge: "Firm docket",
-      heading: "Give your firm one litigation command center.",
+      heading: "Track every firm matter from one CNR-first docket.",
       description:
-        "Track firm matters, hearing dates, verification work, and recent activity without depending on scattered chats or manual follow-ups.",
-      primaryAction: "Add Firm Case",
-      secondaryAction: "View Firm Matters",
-      matterLabel: "Firm matters",
-      setupTitle: "Firm setup",
+        "Add a CNR, keep the latest case status visible, and know which hearings or court-source checks need attention.",
+      primaryAction: "Add CNR",
+      secondaryAction: "View Cases",
+      matterLabel: "Tracked cases",
+      setupTitle: "What Dockethq tracks",
       setupItems: [
-        "Add active firm matters by CNR.",
-        "Keep verification status visible for the team.",
-        "Use settings to maintain firm identity and access.",
+        "Case status, disposal or dismissal signal, and current stage.",
+        "Next hearing date with simple prep reminders.",
+        "Last checked time and court-source verification status.",
       ],
     };
   }
 
-  return {
-    badge: "Solo docket",
-    heading: "Run your practice docket without missing a hearing.",
-    description:
-      "Keep your own matters, hearing dates, reminders, and verification queue in one calm workspace built for daily litigation work.",
-    primaryAction: "Add My Case",
-    secondaryAction: "View My Matters",
-    matterLabel: "My matters",
-    setupTitle: "Solo setup",
-    setupItems: [
-      "Track one live matter for free.",
-      "Use the hearing date as your daily control point.",
-      "Upgrade only when you need to track another case.",
-    ],
-  };
-}
+    return {
+      badge: "Solo docket",
+      heading: "Track Indian litigation cases by CNR.",
+      description:
+      "Add a CNR once. Dockethq keeps the case status, next hearing, verification state, and reminders in one calm workspace.",
+      primaryAction: "Add CNR",
+      secondaryAction: "View Cases",
+      matterLabel: "Tracked cases",
+      setupTitle: "What Dockethq tracks",
+      setupItems: [
+      "Current case status and pending, disposed, or dismissed signal.",
+      "Next hearing date as the daily control point.",
+      "Verification history so you know when the source was last checked.",
+      ],
+    };
+  }
 
 export function paidPlanForPractice(value?: string | null) {
   const practiceType = normalizePracticeType(value);
@@ -74,7 +74,7 @@ export function paidPlanForPractice(value?: string | null) {
         "Unlimited firm cases",
         "Up to 5 team users included",
         "Team member invite queue",
-        "Case assignment to lawyers and associates",
+        "Shared case status and hearing dashboard",
         "Extra users at Rs 97/user/mo",
       ],
       subject: "Activate Dockethq Custom Workflow Plan",

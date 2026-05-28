@@ -686,13 +686,13 @@ export default function NewCasePage() {
           </p>
 
           <h1 className="mt-5 text-5xl font-bold tracking-tight">
-            Add the first tracked matter.
+            Add a CNR to start tracking.
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
-            Enter a 16-character CNR, verify the court status if a provider is
-            configured, then save the matter to your dashboard. If lookup is
-            unavailable, Dockethq still lets you start tracking manually.
+            Enter a 16-character CNR. Dockethq checks the configured court
+            source for status, next hearing, stage, and disposal or dismissal
+            signals. If lookup fails, save it for manual review and retry later.
           </p>
 
           <div className="mt-8 rounded-lg border border-border bg-card p-5">
@@ -705,8 +705,8 @@ export default function NewCasePage() {
                   First tracked case is free
                 </p>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  Let the lawyer feel the value with one live matter. A second
-                  case routes to pricing before it can be added.
+                  Track one live matter before paying. A second saved case
+                  routes to pricing before it can be added.
                 </p>
               </div>
             </div>
@@ -719,7 +719,8 @@ export default function NewCasePage() {
                 <p className="text-sm font-semibold">Only the tracking fields</p>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   Status, dismissal/disposal signal, next hearing, stage, court,
-                  judge, and verification history. No bloated CRM fields.
+                  judge, and verification history. Nothing outside case
+                  tracking.
                 </p>
               </div>
             </div>
@@ -729,9 +730,9 @@ export default function NewCasePage() {
         <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold">Add Case</h2>
+              <h2 className="text-2xl font-bold">Add CNR</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Look it up, review it, then save the matter.
+                Look it up, review the status, then save the matter.
               </p>
             </div>
           </div>
@@ -757,7 +758,7 @@ export default function NewCasePage() {
                 className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-semibold transition hover:bg-accent"
               >
                 <CreditCard className="h-4 w-4" />
-                Billing
+                Plan limits
               </Link>
             </div>
           </div>

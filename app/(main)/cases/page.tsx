@@ -26,7 +26,29 @@ type CaseItem = {
   next_hearing_date?: string | null;
   next_hearing?: string | null;
   verification_status?: string | null;
+  last_synced_at?: string | null;
+  last_sync_status?: string | null;
 };
+
+function formatDate(dateString?: string | null) {
+  if (!dateString) return "Not checked yet";
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) return "Not checked yet";
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function verificationLabel(status?: string | null) {
+  if (!status) return "Needs verification";
+
+  return status.replaceAll("_", " ");
+}
 
 export default function CasesPage() {
   const notify = useToast();
@@ -89,12 +111,13 @@ export default function CasesPage() {
         <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Matter list
+              CNR docket
             </p>
-            <h1 className="mt-3 text-4xl font-bold">Tracked Cases</h1>
+            <h1 className="mt-3 text-4xl font-bold">CNR-tracked cases</h1>
 
             <p className="mt-2 text-muted-foreground">
-              All matters being tracked in Dockethq.
+              Case status, next hearing, verification state, and last checked
+              time for every saved matter.
             </p>
           </div>
 
@@ -103,7 +126,7 @@ export default function CasesPage() {
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
           >
             <Plus className="h-4 w-4" />
-            Add case
+            Add CNR
           </Link>
         </div>
 
@@ -125,12 +148,12 @@ export default function CasesPage() {
                   </p>
                 </div>
 
-                <span className="rounded-full bg-muted px-4 py-2 text-sm font-semibold text-muted-foreground">
+                <span className="rounded-full bg-muted px-4 py-2 text-sm font-semibold capitalize text-muted-foreground">
                   {item.status || item.current_status || "unknown"}
                 </span>
               </div>
 
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <p>
                   <span className="font-semibold">CNR:</span>{" "}
                   {maskCnr(item.cnr_number)}
@@ -149,6 +172,16 @@ export default function CasesPage() {
                   </span>{" "}
                   {item.current_stage || "Not available"}
                 </p>
+
+                <p className="capitalize">
+                  <span className="font-semibold">Check:</span>{" "}
+                  {verificationLabel(item.verification_status)}
+                </p>
+
+                <p>
+                  <span className="font-semibold">Last checked:</span>{" "}
+                  {formatDate(item.last_synced_at)}
+                </p>
               </div>
             </Link>
           ))}
@@ -161,7 +194,7 @@ export default function CasesPage() {
                     <Gavel className="h-5 w-5" />
                   </div>
                   <h2 className="mt-8 text-3xl font-semibold tracking-tight">
-                    Your first tracked case starts here.
+                    Your first tracked CNR starts here.
                   </h2>
                   <p className="mt-3 max-w-xl text-sm leading-7 text-[#64748B]">
                     Add one CNR and Dockethq will build the matter workspace
@@ -172,7 +205,7 @@ export default function CasesPage() {
                       href="/cases/new"
                       className="inline-flex items-center gap-2 rounded-md bg-[#071427] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#111d33]"
                     >
-                      Add first case
+                      Add first CNR
                       <ArrowUpRight className="h-4 w-4" />
                     </Link>
                     <Link

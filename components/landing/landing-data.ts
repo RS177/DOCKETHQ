@@ -1,113 +1,106 @@
 import {
   Bell,
-  BriefcaseBusiness,
   CalendarClock,
   CheckCircle2,
   ClipboardList,
-  FileArchive,
-  FilePenLine,
   Fingerprint,
   Gavel,
   History,
   Landmark,
-  MessageSquareText,
-  Route,
   Scale,
   ShieldCheck,
-  Sparkles,
-  UsersRound,
   Zap,
 } from "lucide-react";
 
 export const problemPoints = [
   {
     title: "Dates live in too many places",
-    copy: "Hearings, limitation dates, filing windows, and internal follow-ups get split across calendars, chat, and memory.",
+    copy: "Hearing dates and case status updates get split across court portals, calendars, chat, and memory.",
     icon: CalendarClock,
   },
   {
-    title: "Case context disappears",
-    copy: "Orders, drafts, billing notes, and counsel instructions are hard to reconstruct when pressure rises.",
-    icon: FileArchive,
+    title: "Court checks become manual work",
+    copy: "Lawyers repeatedly check whether a matter is pending, dismissed, disposed, adjourned, or listed again.",
+    icon: Landmark,
   },
   {
-    title: "Accountability gets blurry",
-    copy: "When work moves quickly, teams lose a clean record of who checked what, when, and why.",
+    title: "Nobody knows what was verified",
+    copy: "Without a check history, teams cannot quickly see when the case source was last reviewed.",
     icon: Fingerprint,
   },
 ];
 
 export const solutionPoints = [
   {
-    title: "A command center for every matter",
-    copy: "Dockets, tasks, documents, hearings, and client updates stay tied to one litigation record.",
+    title: "One tracked record per CNR",
+    copy: "Case status, court, stage, hearing date, and verification history stay tied to one matter.",
     icon: Landmark,
   },
   {
-    title: "Deadline discipline",
-    copy: "Jurisdiction-aware calendaring and reminders make upcoming work impossible to ignore.",
+    title: "Hearing-date discipline",
+    copy: "Upcoming hearings and prep reminders stay visible before the listing date arrives.",
     icon: ShieldCheck,
   },
   {
-    title: "History you can trust",
-    copy: "Every status check, assignment, document action, and communication is captured in an auditable timeline.",
+    title: "Source-check history",
+    copy: "Every court-source refresh or manual verification is captured in the case timeline.",
     icon: History,
   },
 ];
 
 export const features = [
   {
-    title: "Case & docket management",
-    copy: "Track hearings, filings, motions, adjournments, orders, and matter stage from one dashboard.",
+    title: "CNR-based case tracking",
+    copy: "Add a CNR and keep the saved matter focused on status, stage, court, and next hearing.",
     icon: Gavel,
     accent: "from-[#D4A843]/25 to-transparent",
   },
   {
-    title: "Jurisdiction-aware deadlines",
-    copy: "Build calendar rules around court dates, filing windows, limitation periods, and internal review buffers.",
+    title: "Hearing reminders",
+    copy: "Generate simple reminders before the next listed date so the matter is not forgotten.",
     icon: CalendarClock,
     accent: "from-[#2D6BFF]/20 to-transparent",
   },
   {
-    title: "Document automation",
-    copy: "Prepare filing bundles, reuse drafting patterns, and keep every version attached to the case record.",
-    icon: FilePenLine,
+    title: "Court-source verification",
+    copy: "Show whether the latest status came from the configured source, manual review, or a failed check.",
+    icon: ShieldCheck,
     accent: "from-emerald-300/20 to-transparent",
   },
   {
-    title: "Workflow routing",
-    copy: "Assign drafting, filing, appearance prep, client updates, and review work to the right team member.",
-    icon: Route,
+    title: "Case timeline",
+    copy: "Keep status changes, hearing updates, and verification notes in one clean history.",
+    icon: History,
     accent: "from-[#D4A843]/20 to-transparent",
   },
   {
-    title: "Client communication",
-    copy: "Send clear matter updates without exposing your internal working dashboard or private strategy notes.",
-    icon: MessageSquareText,
+    title: "Dismissed or disposed signal",
+    copy: "Make the important status clear instead of burying it inside a long case note.",
+    icon: CheckCircle2,
     accent: "from-sky-300/20 to-transparent",
   },
   {
-    title: "AI case insights",
-    copy: "Summarize timelines, surface missing context, and draft first-pass briefs while keeping lawyer review central.",
-    icon: Sparkles,
+    title: "Quiet dashboard",
+    copy: "Show today’s useful case-tracking signals without turning the product into a full law-firm ERP.",
+    icon: Scale,
     accent: "from-violet-300/20 to-transparent",
   },
 ];
 
 export const steps = [
   {
-    title: "Open the matter",
-    copy: "Add the case, court, parties, CNR, client, documents, and first known hearing date.",
+    title: "Add the CNR",
+    copy: "Enter the case number and let Dockethq check the configured court-data source.",
     icon: ClipboardList,
   },
   {
-    title: "Route the work",
-    copy: "DocketHQ creates deadline queues, assigns owners, and keeps filings moving toward review.",
-    icon: UsersRound,
+    title: "Review the status",
+    copy: "Confirm pending, dismissed, disposed, stage, court, judge, and next hearing details.",
+    icon: ShieldCheck,
   },
   {
-    title: "Audit the outcome",
-    copy: "Every update, reminder, filing, and handoff becomes part of the case history.",
+    title: "Track the hearing",
+    copy: "Keep reminders and source-check history visible until the next update.",
     icon: History,
   },
 ];
@@ -120,10 +113,10 @@ export const pricing = [
     description: "For testing DocketHQ with one live matter.",
     features: [
       "1 user",
-      "1 matter",
-      "Basic docket dashboard",
+      "1 tracked case",
+      "CNR status workspace",
       "Hearing reminders",
-      "Matter history",
+      "Verification history",
     ],
   },
   {
@@ -133,10 +126,10 @@ export const pricing = [
     description: "For active litigators managing repeat matters.",
     features: [
       "1 user",
-      "Unlimited matters",
-      "Document workflows",
+      "Unlimited tracked cases",
+      "CNR lookup and manual review",
       "Email reminders",
-      "AI timeline summaries",
+      "Case status timeline",
     ],
     recommended: true,
   },
@@ -148,17 +141,17 @@ export const pricing = [
     features: [
       "Everything in Pro",
       "Up to 5 team users",
-      "Practice-specific workflow setup",
-      "Case assignment and firm roles",
+      "Shared case-tracking dashboard",
+      "Team invite access",
       "Extra users at Rs 97/user/mo",
     ],
   },
 ];
 
 export const dashboardRows = [
-  ["Karnataka v. Ramesh B.", "Motion hearing", "24 May", "Ready"],
-  ["Apex Constructions v. Nirman", "Filing review", "27 May", "Needs work"],
-  ["Meera Sharma v. ICICI Bank", "Discovery", "03 Jun", "On track"],
+  ["Karnataka v. Ramesh B.", "Next hearing", "24 May", "Pending"],
+  ["Apex Constructions v. Nirman", "Court check", "27 May", "Needs review"],
+  ["Meera Sharma v. ICICI Bank", "Status verified", "03 Jun", "Checked"],
 ];
 
 export const socialLinks = [
@@ -178,8 +171,8 @@ export const footerLinks = [
 
 export const proofBadges = [
   { label: "Court-date visibility", icon: Bell },
-  { label: "Firm-ready controls", icon: BriefcaseBusiness },
-  { label: "Audit-first history", icon: CheckCircle2 },
+  { label: "CNR-first tracking", icon: Gavel },
+  { label: "Verification history", icon: CheckCircle2 },
   { label: "Litigation specific", icon: Scale },
   { label: "Fast onboarding", icon: Zap },
 ];

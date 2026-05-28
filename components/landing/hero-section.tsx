@@ -67,16 +67,16 @@ export function HeroSection() {
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A843]/35 bg-[#D4A843]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#F2D58A]">
             <ShieldCheck className="h-4 w-4" />
-            Litigation command center
+            CNR-based case tracking
           </div>
 
           <h1 className="mt-8 text-[clamp(3.8rem,8vw,6.5rem)] font-semibold leading-[0.88] tracking-tight">
-            Win cases. Not admin battles.
+            Track cases. Never lose the next hearing.
           </h1>
 
           <p className="mt-7 max-w-2xl text-[clamp(1.05rem,1.5vw,1.35rem)] leading-8 text-white/72">
-            DocketHQ is the litigation workflow platform that keeps your entire
-            team synchronized from first filing to final verdict.
+            DocketHQ turns one CNR into a focused matter workspace for case
+            status, hearing dates, source checks, and reminders.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -86,7 +86,7 @@ export function HeroSection() {
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition duration-700 group-hover:translate-x-full" />
               <span className="relative inline-flex items-center gap-2">
-                Start free trial
+                Start with one free case
                 <ArrowRight className="h-4 w-4" />
               </span>
             </Link>

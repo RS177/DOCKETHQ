@@ -124,19 +124,19 @@ function EmptyDashboardState({
             First case setup
           </p>
           <h2 className="mt-3 max-w-2xl text-4xl font-semibold tracking-tight">
-            Add one live matter and Dockethq becomes useful immediately.
+            Add one CNR and Dockethq becomes useful immediately.
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[#64748B]">
             The dashboard is intentionally quiet until a case exists. Start with
-            one CNR, then Dockethq can show hearings, status, verification, and
-            reminders around that matter.
+            one CNR, then Dockethq can show case status, next hearing,
+            verification state, and reminders around that matter.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/cases/new"
               className="inline-flex items-center gap-2 rounded-md bg-[#071427] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#111d33]"
             >
-              Add first case
+              Add first CNR
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link
@@ -196,11 +196,11 @@ function FirstCaseMomentum({ item }: { item: CaseSummary }) {
             First case live
           </p>
           <h2 className="mt-2 text-2xl font-semibold">
-            {caseTitle(item)} is now your proof of value.
+            {caseTitle(item)} is now your live tracking sample.
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
-            Use this matter to check the hearing workflow. When you try to add a
-            second case, Dockethq will show pricing before saving it.
+            Use this matter to test status checks, hearing reminders, and the
+            case timeline. Add another CNR only when this flow feels useful.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -215,7 +215,7 @@ function FirstCaseMomentum({ item }: { item: CaseSummary }) {
             href="/cases/new"
             className="inline-flex items-center gap-2 rounded-md border border-amber-200 bg-white/70 px-4 py-3 text-sm font-semibold transition hover:bg-white"
           >
-            Try second case
+            Add another CNR
           </Link>
         </div>
       </div>
@@ -397,7 +397,7 @@ export default function DashboardPage() {
           <div className="p-6 sm:p-8">
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-stone-400">
-                Dockethq
+                CNR case tracking
               </span>
               <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.22em] text-emerald-200">
                 {copy.badge}
@@ -414,8 +414,8 @@ export default function DashboardPage() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/cases/new"
+            <Link
+              href="/cases/new"
                 className="inline-flex items-center gap-2 rounded-md bg-stone-100 px-4 py-2.5 text-sm font-semibold text-stone-950 transition hover:bg-white"
               >
                 <Plus className="h-4 w-4" />
