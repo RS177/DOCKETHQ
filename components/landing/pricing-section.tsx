@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { pricing } from "./landing-data";
+import { WAITLIST_MAILTO } from "./waitlist";
 
 export function PricingSection() {
   const [annual, setAnnual] = useState(true);
@@ -77,16 +77,16 @@ export function PricingSection() {
                 ))}
               </ul>
 
-              <Link
-                href="/signup?redirectTo=/onboarding"
+              <a
+                href={WAITLIST_MAILTO}
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-md px-5 py-3 font-bold transition hover:-translate-y-0.5 ${
                   plan.recommended
                     ? "bg-[#2D6BFF] text-white"
                     : "bg-[#0A0F1E] text-white"
                 }`}
               >
-                {plan.name === "Custom Workflow" ? "Start with free case" : "Start free trial"}
-              </Link>
+                Join the waitlist
+              </a>
             </article>
           ))}
         </div>

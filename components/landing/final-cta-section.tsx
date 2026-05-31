@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { WAITLIST_MAILTO } from "./waitlist";
 
 export function FinalCtaSection() {
   return (
@@ -8,28 +8,29 @@ export function FinalCtaSection() {
         <div className="grid gap-10 lg:grid-cols-[1fr_0.7fr] lg:items-end">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#D4A843]">
-              Put the docket under control
+              Early access
             </p>
             <h2 className="mt-5 max-w-4xl text-[clamp(2.5rem,6vw,5.5rem)] font-semibold leading-[0.92] tracking-tight">
-              The next missed deadline should not be possible.
+              Can I add you to early access?
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-7 text-white/64">
-              Start with one matter, invite the team when the workflow is clear,
-              and keep every filing, hearing, motion, and update in one place.
+              DocketHQ is being built around one sharp promise: never miss
+              another court update. Join the waitlist and we will reach out
+              before opening the next access batch.
             </p>
           </div>
 
           <div className="flex flex-col gap-3">
-            <Link
-              href="/signup?redirectTo=/onboarding"
+            <a
+              href={WAITLIST_MAILTO}
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-md bg-[#2D6BFF] px-6 py-4 font-bold text-white transition hover:-translate-y-1"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition duration-700 group-hover:translate-x-full" />
               <span className="relative inline-flex items-center gap-2">
-                Start free trial
+                Join the waitlist
                 <ArrowRight className="h-4 w-4" />
               </span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

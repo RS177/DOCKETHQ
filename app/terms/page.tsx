@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FileText, LockKeyhole, Scale, ShieldCheck } from "lucide-react";
 import { TERMS_LAST_UPDATED, TERMS_VERSION } from "@/app/lib/terms";
 import { BrandLogo } from "@/components/brand-logo";
+import { WAITLIST_MAILTO } from "@/components/landing/waitlist";
 
 const termsSections = [
   {
@@ -88,12 +89,12 @@ export default function TermsPage() {
           >
             Log in
           </Link>
-          <Link
-            href="/signup?redirectTo=/onboarding"
+          <a
+            href={WAITLIST_MAILTO}
             className="rounded-xl bg-[#071427] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-[#071427]/10 transition hover:bg-[#111d33]"
           >
-            Start Free
-          </Link>
+            Join waitlist
+          </a>
         </div>
       </nav>
 

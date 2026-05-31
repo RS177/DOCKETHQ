@@ -7,6 +7,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LandingAnchor } from "./landing-anchor";
 import { dashboardRows, proofBadges } from "./landing-data";
 import { NetworkBackground } from "./network-background";
+import { WAITLIST_MAILTO } from "./waitlist";
 
 export function HeroSection() {
   return (
@@ -42,16 +43,16 @@ export function HeroSection() {
             >
               Log in
             </Link>
-            <Link
-              href="/signup?redirectTo=/onboarding"
+            <a
+              href={WAITLIST_MAILTO}
               className="group relative inline-flex overflow-hidden rounded-md bg-[#D4A843] px-4 py-2.5 text-sm font-bold text-[#0A0F1E] shadow-2xl shadow-[#D4A843]/20 transition hover:-translate-y-0.5"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition duration-700 group-hover:translate-x-full" />
               <span className="relative inline-flex items-center gap-2">
-                Start free trial
+                Join waitlist
                 <ArrowRight className="h-4 w-4" />
               </span>
-            </Link>
+            </a>
           </div>
         </nav>
       </header>
@@ -69,25 +70,26 @@ export function HeroSection() {
           </div>
 
           <h1 className="mt-8 text-[clamp(3.8rem,8vw,6.5rem)] font-semibold leading-[0.88] tracking-tight">
-            Track cases. Never lose the next hearing.
+            Never miss another court update.
           </h1>
 
           <p className="mt-7 max-w-2xl text-[clamp(1.05rem,1.5vw,1.35rem)] leading-8 text-white/72">
-            DocketHQ turns one CNR into a focused matter workspace for case
-            status, hearing dates, source checks, and reminders.
+            Join the waitlist for a CNR-first workspace that tracks case
+            status, hearing dates, source checks, and reminders. Nothing
+            complicated.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/signup?redirectTo=/onboarding"
+            <a
+              href={WAITLIST_MAILTO}
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-md bg-[#2D6BFF] px-6 py-4 font-bold text-white shadow-2xl shadow-[#2D6BFF]/25 transition hover:-translate-y-1"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition duration-700 group-hover:translate-x-full" />
               <span className="relative inline-flex items-center gap-2">
-                Start with one free case
+                Join the waitlist
                 <ArrowRight className="h-4 w-4" />
               </span>
-            </Link>
+            </a>
             <LandingAnchor
               href="#features"
               className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/7 px-6 py-4 font-bold text-white transition hover:-translate-y-1 hover:border-[#D4A843]/60 hover:bg-white/12"
