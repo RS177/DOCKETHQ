@@ -35,7 +35,7 @@ export function friendlyAuthError(
     return {
       title: "Confirm your email first",
       description:
-        "Open the verification email from Supabase or DocketHQ, then come back and sign in.",
+        "Open the verification email from Supabase or DocketHQ, then come back and log in.",
     };
   }
 
@@ -47,7 +47,7 @@ export function friendlyAuthError(
     return {
       title: "Account already exists",
       description:
-        "Use sign in instead, or reset the password if you cannot access this email.",
+        "Use login instead, or reset the password if you cannot access this email.",
     };
   }
 

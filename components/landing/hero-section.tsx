@@ -40,7 +40,7 @@ export function HeroSection() {
               href="/login"
               className="hidden rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-[#D4A843]/60 hover:bg-white/10 sm:inline-flex"
             >
-              Sign in
+              Log in
             </Link>
             <Link
               href="/signup?redirectTo=/onboarding"

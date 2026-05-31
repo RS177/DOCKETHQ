@@ -43,7 +43,7 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   if (!token) {
     return NextResponse.json(
-      { error: "Sign in before accepting this invite." },
+      { error: "Log in before accepting this invite." },
       { status: 401 }
     );
   }
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest, { params }: Params) {
   if (invite.email.toLowerCase() !== user.email.toLowerCase()) {
     return NextResponse.json(
       {
-        error: `This invite was sent to ${invite.email}. Sign in with that email to accept it.`,
+        error: `This invite was sent to ${invite.email}. Log in with that email to accept it.`,
       },
       { status: 403 }
     );

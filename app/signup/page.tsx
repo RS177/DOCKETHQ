@@ -126,7 +126,7 @@ export default function SignupPage() {
     const confirmationNotice = {
       title: "Check your email to finish signup",
       description:
-        "Open the DocketHQ verification email, then sign in with the same email and password.",
+        "Open the DocketHQ verification email, then log in with the same email and password.",
     };
     setAuthError(confirmationNotice);
     setPassword("");

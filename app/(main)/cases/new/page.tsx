@@ -416,8 +416,8 @@ export default function NewCasePage() {
     if (!user) {
       setLoading(false);
       notify({
-        title: "Sign in required",
-        description: "Create an account or sign in before adding a case.",
+        title: "Login required",
+        description: "Create an account or log in before adding a case.",
         variant: "warning",
       });
       router.push(

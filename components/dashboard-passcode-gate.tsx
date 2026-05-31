@@ -404,7 +404,7 @@ export function DashboardPasscodeGate({
       <main className="flex min-h-screen items-center justify-center bg-[#0d0c0a] px-6 text-stone-100">
         <section className="w-full max-w-md rounded-lg border border-white/10 bg-white/[0.04] p-8 text-center shadow-2xl shadow-black/30">
           <LockKeyhole className="mx-auto h-8 w-8 text-amber-200" />
-          <h1 className="mt-5 text-3xl font-semibold">Sign in again</h1>
+          <h1 className="mt-5 text-3xl font-semibold">Log in again</h1>
           <p className="mt-3 text-sm leading-6 text-stone-400">
             Your browser has a workspace marker, but Supabase does not have an
             active signed-in session.

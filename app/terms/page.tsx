@@ -6,7 +6,7 @@ import { BrandLogo } from "@/components/brand-logo";
 const termsSections = [
   {
     title: "1. Acceptance of Terms",
-    body: "By creating an account, signing in, or using DocketHQ, you agree to these Terms of Service. If you use DocketHQ for a law firm, chamber, company, or legal team, you confirm that you are authorized to accept these Terms for that workspace.",
+    body: "By creating an account, logging in, or using DocketHQ, you agree to these Terms of Service. If you use DocketHQ for a law firm, chamber, company, or legal team, you confirm that you are authorized to accept these Terms for that workspace.",
   },
   {
     title: "2. Who May Use DocketHQ",
@@ -86,7 +86,7 @@ export default function TermsPage() {
             href="/login"
             className="hidden rounded-xl border border-[#D6C6AA] bg-white px-4 py-2 text-sm font-semibold transition hover:bg-[#FFFDF8] sm:inline-flex"
           >
-            Sign in
+            Log in
           </Link>
           <Link
             href="/signup?redirectTo=/onboarding"

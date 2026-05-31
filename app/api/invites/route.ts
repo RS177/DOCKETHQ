@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
   if (!token) {
     return NextResponse.json(
-      { error: "Sign in before inviting a team member." },
+      { error: "Log in before inviting a team member." },
       { status: 401 }
     );
   }

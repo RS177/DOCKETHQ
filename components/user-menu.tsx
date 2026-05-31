@@ -154,7 +154,7 @@ export function UserMenu() {
                   {getUserDisplayName(user)}
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {user?.email || "Signed in"}
+                  {user?.email || "Logged in"}
                 </p>
               </div>
             </div>

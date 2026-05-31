@@ -178,7 +178,7 @@ export default function InvitePage() {
               {signedInEmail && (
                 <div className="flex items-center gap-3 text-sm text-stone-300">
                   <CheckCircle2 className="h-4 w-4 text-stone-500" />
-                  Signed in as: {signedInEmail}
+                  Logged in as: {signedInEmail}
                 </div>
               )}
             </div>
@@ -208,7 +208,7 @@ export default function InvitePage() {
                   href={loginHref}
                   className="inline-flex items-center justify-center rounded-md bg-stone-100 px-4 py-3 font-semibold text-stone-950 transition hover:bg-white"
                 >
-                  Sign in
+                  Log in
                 </Link>
                 <Link
                   href={signupHref}

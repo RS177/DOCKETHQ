@@ -86,7 +86,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (error) {
-      const friendly = friendlyAuthError(error, "Sign in failed");
+      const friendly = friendlyAuthError(error, "Login failed");
       setAuthError(friendly);
       notify({
         title: friendly.title,
@@ -135,7 +135,7 @@ export default function LoginPage() {
         </div>
 
         <h1 className="mt-6 text-4xl font-semibold tracking-tight">
-          Sign in to DocketHQ
+          Log in to DocketHQ
         </h1>
 
         <p className="mt-3 text-sm leading-6 text-stone-400">
@@ -177,7 +177,7 @@ export default function LoginPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-stone-100 px-4 py-3 font-semibold text-stone-950 transition hover:bg-white disabled:opacity-60"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Logging in..." : "Log In"}
           </button>
         </form>
 
