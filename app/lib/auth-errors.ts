@@ -35,7 +35,7 @@ export function friendlyAuthError(
     return {
       title: "Confirm your email first",
       description:
-        "Open the verification email from Supabase or Dockethq, then come back and sign in.",
+        "Open the verification email from Supabase or DocketHQ, then come back and sign in.",
     };
   }
 
@@ -83,7 +83,7 @@ export function friendlyAuthError(
     return {
       title: "Connection issue",
       description:
-        "Dockethq could not reach the auth server. Check your internet and try again.",
+        "DocketHQ could not reach the auth server. Check your internet and try again.",
     };
   }
 

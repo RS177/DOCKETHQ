@@ -46,7 +46,7 @@ export default function OnboardingPage() {
   const [user, setUser] = useState<User | null>(null);
   const [workspace, setWorkspace] = useState<Workspace>({
     firmId: null,
-    firmName: "Dockethq workspace",
+    firmName: "DocketHQ workspace",
     practiceType: "solo",
   });
   const [courtFocus, setCourtFocus] = useState("");
@@ -98,7 +98,7 @@ export default function OnboardingPage() {
           firmName:
             firm?.name ||
             currentUser.user_metadata?.firm_name ||
-            "Dockethq workspace",
+            "DocketHQ workspace",
           practiceType: effectivePracticeType(
             firm?.practice_type || currentUser.user_metadata?.practice_type,
             firm?.plan_type
@@ -107,7 +107,7 @@ export default function OnboardingPage() {
       } else {
         setWorkspace({
           firmId: null,
-          firmName: currentUser.user_metadata?.firm_name || "Dockethq workspace",
+          firmName: currentUser.user_metadata?.firm_name || "DocketHQ workspace",
           practiceType: normalizePracticeType(
             currentUser.user_metadata?.practice_type
           ),
@@ -208,7 +208,7 @@ export default function OnboardingPage() {
         </h1>
 
         <p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
-          Keep this short. Dockethq only needs enough context to personalize the
+          Keep this short. DocketHQ only needs enough context to personalize the
           workspace, then it sends you straight into adding the first CNR.
         </p>
 
@@ -309,7 +309,7 @@ export default function OnboardingPage() {
 
           <div className="flex items-center gap-2 rounded-md border border-border bg-background p-3 text-xs leading-5 text-muted-foreground">
             <Sparkles className="h-4 w-4 shrink-0 text-amber-200" />
-            After this, Dockethq opens the case creation screen with this CNR
+            After this, DocketHQ opens the case creation screen with this CNR
             already filled in.
           </div>
         </form>

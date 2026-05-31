@@ -90,7 +90,7 @@ export const features = [
 export const steps = [
   {
     title: "Add the CNR",
-    copy: "Enter the case number and let Dockethq check the configured court-data source.",
+    copy: "Enter the case number and let DocketHQ check the configured court-data source.",
     icon: ClipboardList,
   },
   {

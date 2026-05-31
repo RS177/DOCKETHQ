@@ -41,7 +41,7 @@ export default function BillingPage() {
   const [billing, setBilling] = useState<BillingState>({
     planType: "free",
     practiceType: "solo",
-    firmName: "Dockethq workspace",
+    firmName: "DocketHQ workspace",
     caseCount: 0,
     loading: true,
   });
@@ -90,7 +90,7 @@ export default function BillingPage() {
             firmName:
               firm?.name ||
               user.user_metadata?.firm_name ||
-              "Dockethq workspace",
+              "DocketHQ workspace",
             caseCount: count || 0,
             loading: false,
           });
@@ -107,7 +107,7 @@ export default function BillingPage() {
         setBilling({
           planType: "free",
           practiceType: normalizePracticeType(user.user_metadata?.practice_type),
-          firmName: user.user_metadata?.firm_name || "Dockethq workspace",
+          firmName: user.user_metadata?.firm_name || "DocketHQ workspace",
           caseCount: count || 0,
           loading: false,
         });
@@ -125,7 +125,7 @@ export default function BillingPage() {
   const paidPlan = paidPlanForPractice(billing.practiceType);
   const freeDescription =
     billing.practiceType === "firm"
-      ? "Best for testing Dockethq with one firm matter before moving the full docket in."
+      ? "Best for testing DocketHQ with one firm matter before moving the full docket in."
       : "Best for trying the case tracking loop with one personal matter.";
 
   return (
@@ -167,7 +167,7 @@ export default function BillingPage() {
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-stone-400">
               Your workspace is set as{" "}
-              {practiceLabel(billing.practiceType).toLowerCase()}. Dockethq keeps
+              {practiceLabel(billing.practiceType).toLowerCase()}. DocketHQ keeps
               the trial simple, then prices the upgrade around how the lawyer
               actually practices.
             </p>

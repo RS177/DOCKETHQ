@@ -79,7 +79,7 @@ export default function LoginPage() {
         </div>
 
         <h1 className="mt-6 text-4xl font-semibold tracking-tight">
-          Sign in to Dockethq
+          Sign in to DocketHQ
         </h1>
 
         <p className="mt-3 text-sm leading-6 text-stone-400">

@@ -165,7 +165,7 @@ async function sendInviteEmail({
   const from =
     process.env.INVITE_FROM_EMAIL ||
     process.env.REMINDER_FROM_EMAIL ||
-    "Dockethq <onboarding@resend.dev>";
+    "DocketHQ <onboarding@resend.dev>";
 
   if (!apiKey) {
     return {

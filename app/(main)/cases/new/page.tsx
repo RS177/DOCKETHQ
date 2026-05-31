@@ -166,7 +166,7 @@ function CaseLimitPaywall({
           Your first case is active.
         </h3>
         <p className="mt-3 text-sm leading-6 text-stone-600">
-          The free Dockethq workspace includes one tracked case. To add another
+          The free DocketHQ workspace includes one tracked case. To add another
           matter, start a paid plan and keep the docket growing.
         </p>
 
@@ -437,7 +437,7 @@ export default function NewCasePage() {
       notify({
         title: "Upgrade to add another case",
         description:
-          "Your free Dockethq workspace already has one active tracked case.",
+          "Your free DocketHQ workspace already has one active tracked case.",
         variant: "warning",
       });
       return;
@@ -644,7 +644,7 @@ export default function NewCasePage() {
 
     setLoading(false);
     notify({
-      title: "Case added to Dockethq",
+      title: "Case added to DocketHQ",
       description:
         "The matter is now on your dashboard with status and hearing tracking.",
       variant: "success",
@@ -690,7 +690,7 @@ export default function NewCasePage() {
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
-            Enter a 16-character CNR. Dockethq checks the configured court
+            Enter a 16-character CNR. DocketHQ checks the configured court
             source for status, next hearing, stage, and disposal or dismissal
             signals. If lookup fails, save it for manual review and retry later.
           </p>
@@ -811,7 +811,7 @@ export default function NewCasePage() {
                         Checking configured court source
                       </h3>
                       <p className="mt-2 text-sm leading-6 text-amber-50/80">
-                        Dockethq is looking for case status, disposal/dismissal
+                        DocketHQ is looking for case status, disposal/dismissal
                         signal, next hearing, stage, court, and judge.
                       </p>
                     </div>
@@ -904,7 +904,7 @@ export default function NewCasePage() {
                     <div className="flex-1">
                       <h3 className="font-semibold">Manual case details</h3>
                       <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                        Save the matter without automatic court data. Dockethq
+                        Save the matter without automatic court data. DocketHQ
                         will mark it as needing review.
                       </p>
 
@@ -1032,7 +1032,7 @@ export default function NewCasePage() {
                   <div className="flex-1">
                     <h3 className="font-semibold">Reminder delivery</h3>
                     <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                      If a hearing date is saved, Dockethq schedules reminders
+                      If a hearing date is saved, DocketHQ schedules reminders
                       7 days before, 1 day before, and on the hearing day. Email
                       is optional; phone is optional and uses SMS when configured.
                     </p>

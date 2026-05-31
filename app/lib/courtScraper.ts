@@ -208,7 +208,7 @@ async function fetchFromEcourtsIndiaApi(cnrNumber: string): Promise<CourtFetchRe
     return {
       success: false,
       error:
-        "Automatic court lookup needs a court-data API key. Official eCourts CNR search uses CAPTCHA, so Dockethq cannot silently scrape it from the server.",
+        "Automatic court lookup needs a court-data API key. Official eCourts CNR search uses CAPTCHA, so DocketHQ cannot silently scrape it from the server.",
       code: "PROVIDER_NOT_CONFIGURED",
       officialSearchUrl: OFFICIAL_ECOURTS_CNR_URL,
       data: null,

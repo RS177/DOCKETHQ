@@ -197,7 +197,7 @@ export default function CasesPage() {
                     Your first tracked CNR starts here.
                   </h2>
                   <p className="mt-3 max-w-xl text-sm leading-7 text-[#64748B]">
-                    Add one CNR and Dockethq will build the matter workspace
+                    Add one CNR and DocketHQ will build the matter workspace
                     around status, next hearing, verification, and reminders.
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">

@@ -35,7 +35,7 @@ export function dashboardCopy(value?: string | null) {
       primaryAction: "Add CNR",
       secondaryAction: "View Cases",
       matterLabel: "Tracked cases",
-      setupTitle: "What Dockethq tracks",
+      setupTitle: "What DocketHQ tracks",
       setupItems: [
         "Case status, disposal or dismissal signal, and current stage.",
         "Next hearing date with simple prep reminders.",
@@ -48,11 +48,11 @@ export function dashboardCopy(value?: string | null) {
       badge: "Solo docket",
       heading: "Track Indian litigation cases by CNR.",
       description:
-      "Add a CNR once. Dockethq keeps the case status, next hearing, verification state, and reminders in one calm workspace.",
+      "Add a CNR once. DocketHQ keeps the case status, next hearing, verification state, and reminders in one calm workspace.",
       primaryAction: "Add CNR",
       secondaryAction: "View Cases",
       matterLabel: "Tracked cases",
-      setupTitle: "What Dockethq tracks",
+      setupTitle: "What DocketHQ tracks",
       setupItems: [
       "Current case status and pending, disposed, or dismissed signal.",
       "Next hearing date as the daily control point.",
@@ -77,7 +77,7 @@ export function paidPlanForPractice(value?: string | null) {
         "Shared case status and hearing dashboard",
         "Extra users at Rs 97/user/mo",
       ],
-      subject: "Activate Dockethq Custom Workflow Plan",
+      subject: "Activate DocketHQ Custom Workflow Plan",
     };
   }
 
@@ -92,6 +92,6 @@ export function paidPlanForPractice(value?: string | null) {
       "Personal hearing reminders",
       "Verification queue for your own matters",
     ],
-    subject: "Activate Dockethq Solo Plan",
+    subject: "Activate DocketHQ Solo Plan",
   };
 }

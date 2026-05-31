@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dockethq - Case Tracking and Hearing Reminders",
+  title: "DocketHQ - Case Tracking and Hearing Reminders",
   description: "Case tracking and hearing reminder workspace for lawyers",
 };
 

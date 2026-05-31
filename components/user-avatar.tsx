@@ -1,13 +1,13 @@
 import type { User } from "@supabase/supabase-js";
 
 export function getUserDisplayName(user: User | null) {
-  if (!user) return "Dockethq user";
+  if (!user) return "DocketHQ user";
 
   const displayName = (
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     user.email?.split("@")[0] ||
-    "Dockethq user"
+    "DocketHQ user"
   ) as string;
 
   return displayName;

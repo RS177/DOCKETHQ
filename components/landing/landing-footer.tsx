@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
+import { LandingAnchor } from "./landing-anchor";
 import { footerLinks, socialLinks } from "./landing-data";
 
 export function LandingFooter() {
@@ -15,15 +16,25 @@ export function LandingFooter() {
             tasks, and matter history without turning the practice into admin.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            {socialLinks.map(([label, href]) => (
-              <a
-                key={label}
-                href={href}
-                className="rounded-md border border-[#E2D5BD] bg-white px-4 py-2 text-sm font-semibold text-[#0A0F1E] transition hover:-translate-y-0.5 hover:border-[#D4A843]"
-              >
-                {label}
-              </a>
-            ))}
+            {socialLinks.map(([label, href]) =>
+              href.startsWith("#") ? (
+                <LandingAnchor
+                  key={label}
+                  href={href}
+                  className="rounded-md border border-[#E2D5BD] bg-white px-4 py-2 text-sm font-semibold text-[#0A0F1E] transition hover:-translate-y-0.5 hover:border-[#D4A843]"
+                >
+                  {label}
+                </LandingAnchor>
+              ) : (
+                <a
+                  key={label}
+                  href={href}
+                  className="rounded-md border border-[#E2D5BD] bg-white px-4 py-2 text-sm font-semibold text-[#0A0F1E] transition hover:-translate-y-0.5 hover:border-[#D4A843]"
+                >
+                  {label}
+                </a>
+              ),
+            )}
           </div>
         </div>
 
@@ -45,6 +56,14 @@ export function LandingFooter() {
                       >
                         {label}
                       </Link>
+                    ) : href.startsWith("#") ? (
+                      <LandingAnchor
+                        key={label}
+                        href={href}
+                        className="block text-sm text-[#5E6A7D] transition hover:text-[#0A0F1E]"
+                      >
+                        {label}
+                      </LandingAnchor>
                     ) : (
                       <a
                         key={label}

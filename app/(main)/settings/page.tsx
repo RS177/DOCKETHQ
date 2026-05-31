@@ -432,7 +432,7 @@ export default function AccountSettingsPage() {
 
             <p className="mt-6 max-w-2xl text-sm leading-6 text-stone-400">
               Keep the lawyer profile, firm identity, and access basics clean.
-              This is what Dockethq uses across the workspace.
+              This is what DocketHQ uses across the workspace.
             </p>
           </div>
 

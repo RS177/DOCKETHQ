@@ -18,7 +18,7 @@ type DeliveryResult =
 
 async function sendEmailReminder(message: ReminderMessage): Promise<DeliveryResult> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.REMINDER_FROM_EMAIL || "Dockethq <onboarding@resend.dev>";
+  const from = process.env.REMINDER_FROM_EMAIL || "DocketHQ <onboarding@resend.dev>";
 
   if (!apiKey) {
     return {

@@ -663,7 +663,7 @@ export default function CaseDetailsPage() {
           : "Court status checked",
       description:
         syncStatus === "changed"
-          ? "Dockethq updated this matter from the latest provider response."
+          ? "DocketHQ updated this matter from the latest provider response."
           : "No changes were found in the latest provider response.",
       variant: "success",
     });

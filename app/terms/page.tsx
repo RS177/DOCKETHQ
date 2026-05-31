@@ -6,23 +6,23 @@ import { BrandLogo } from "@/components/brand-logo";
 const termsSections = [
   {
     title: "1. Acceptance of Terms",
-    body: "By creating an account, signing in, or using Dockethq, you agree to these Terms of Service. If you use Dockethq for a law firm, chamber, company, or legal team, you confirm that you are authorized to accept these Terms for that workspace.",
+    body: "By creating an account, signing in, or using DocketHQ, you agree to these Terms of Service. If you use DocketHQ for a law firm, chamber, company, or legal team, you confirm that you are authorized to accept these Terms for that workspace.",
   },
   {
-    title: "2. Who May Use Dockethq",
-    body: "Dockethq is intended for lawyers, law firms, chambers, legal teams, and authorized staff. You must be legally capable of entering into a binding agreement or use the service only under an authorized organization account.",
+    title: "2. Who May Use DocketHQ",
+    body: "DocketHQ is intended for lawyers, law firms, chambers, legal teams, and authorized staff. You must be legally capable of entering into a binding agreement or use the service only under an authorized organization account.",
   },
   {
-    title: "3. What Dockethq Provides",
-    body: "Dockethq helps users record litigation matters, track CNR-based case information, maintain hearing dates, store status history, and prepare reminders. Some features may depend on third-party legal data providers, public court websites, APIs, browser availability, or manual user input.",
+    title: "3. What DocketHQ Provides",
+    body: "DocketHQ helps users record litigation matters, track CNR-based case information, maintain hearing dates, store status history, and prepare reminders. Some features may depend on third-party legal data providers, public court websites, APIs, browser availability, or manual user input.",
   },
   {
     title: "4. No Legal Advice",
-    body: "Dockethq is workflow software. It does not provide legal advice, legal opinions, representation, advocacy, filing services, or guaranteed court information. Users remain responsible for verifying case status, hearing dates, orders, limitation periods, procedural deadlines, and client communications.",
+    body: "DocketHQ is workflow software. It does not provide legal advice, legal opinions, representation, advocacy, filing services, or guaranteed court information. Users remain responsible for verifying case status, hearing dates, orders, limitation periods, procedural deadlines, and client communications.",
   },
   {
     title: "5. Court Data and Accuracy",
-    body: "Court status, CNR lookups, hearing dates, orders, disposed status, dismissed status, and other court-related information may be delayed, unavailable, incomplete, blocked by CAPTCHA, or different from official records. Dockethq should be treated as an assistance layer, not as the official court record.",
+    body: "Court status, CNR lookups, hearing dates, orders, disposed status, dismissed status, and other court-related information may be delayed, unavailable, incomplete, blocked by CAPTCHA, or different from official records. DocketHQ should be treated as an assistance layer, not as the official court record.",
   },
   {
     title: "6. User Responsibilities",
@@ -30,23 +30,23 @@ const termsSections = [
   },
   {
     title: "7. Confidentiality and Matter Data",
-    body: "Dockethq is designed to keep workspace data private to authorized users in the relevant firm or practice. You agree not to upload data you are not authorized to handle. Dockethq may process matter data only to provide, secure, maintain, troubleshoot, and improve the service.",
+    body: "DocketHQ is designed to keep workspace data private to authorized users in the relevant firm or practice. You agree not to upload data you are not authorized to handle. DocketHQ may process matter data only to provide, secure, maintain, troubleshoot, and improve the service.",
   },
   {
     title: "8. Data Protection and Privacy",
-    body: "Users must comply with applicable data protection, confidentiality, professional conduct, and client-consent obligations. Dockethq will use reasonable technical and organizational safeguards, but no internet service can guarantee absolute security. A separate privacy policy may explain detailed data handling when the product is launched publicly.",
+    body: "Users must comply with applicable data protection, confidentiality, professional conduct, and client-consent obligations. DocketHQ will use reasonable technical and organizational safeguards, but no internet service can guarantee absolute security. A separate privacy policy may explain detailed data handling when the product is launched publicly.",
   },
   {
     title: "9. Acceptable Use",
-    body: "You must not misuse Dockethq, attempt unauthorized access, bypass security controls, scrape or overload third-party services, upload malicious content, infringe rights, harass others, or use the service for unlawful activity.",
+    body: "You must not misuse DocketHQ, attempt unauthorized access, bypass security controls, scrape or overload third-party services, upload malicious content, infringe rights, harass others, or use the service for unlawful activity.",
   },
   {
     title: "10. Third-Party Services",
-    body: "Dockethq may rely on Supabase, hosting providers, email services, payment providers, court-data providers, public legal-data sources, or other third-party systems. Their availability, accuracy, and policies may affect the service.",
+    body: "DocketHQ may rely on Supabase, hosting providers, email services, payment providers, court-data providers, public legal-data sources, or other third-party systems. Their availability, accuracy, and policies may affect the service.",
   },
   {
     title: "11. Payments and Plans",
-    body: "Dockethq may offer free and paid plans. Free usage may be limited, including by number of tracked cases. Paid pricing, billing cycles, taxes, refunds, and plan limits will be shown before payment when billing is enabled.",
+    body: "DocketHQ may offer free and paid plans. Free usage may be limited, including by number of tracked cases. Paid pricing, billing cycles, taxes, refunds, and plan limits will be shown before payment when billing is enabled.",
   },
   {
     title: "12. AI and Automation Features",
@@ -54,11 +54,11 @@ const termsSections = [
   },
   {
     title: "13. Suspension or Termination",
-    body: "We may suspend or terminate access if there is misuse, security risk, non-payment, unlawful activity, or violation of these Terms. Users may stop using Dockethq at any time.",
+    body: "We may suspend or terminate access if there is misuse, security risk, non-payment, unlawful activity, or violation of these Terms. Users may stop using DocketHQ at any time.",
   },
   {
     title: "14. Limitation of Liability",
-    body: "To the maximum extent permitted by law, Dockethq is not liable for missed hearings, wrong case status, inaccurate court data, unavailable third-party services, data entered incorrectly by users, lost profits, indirect damages, or professional consequences arising from reliance on the service.",
+    body: "To the maximum extent permitted by law, DocketHQ is not liable for missed hearings, wrong case status, inaccurate court data, unavailable third-party services, data entered incorrectly by users, lost profits, indirect damages, or professional consequences arising from reliance on the service.",
   },
   {
     title: "15. Changes to Terms",
@@ -77,8 +77,14 @@ export default function TermsPage() {
         <BrandLogo />
         <div className="flex items-center gap-3">
           <Link
-            href="/login"
+            href="/dashboard"
             className="rounded-xl border border-[#D6C6AA] bg-white px-4 py-2 text-sm font-semibold transition hover:bg-[#FFFDF8]"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/login"
+            className="hidden rounded-xl border border-[#D6C6AA] bg-white px-4 py-2 text-sm font-semibold transition hover:bg-[#FFFDF8] sm:inline-flex"
           >
             Sign in
           </Link>
@@ -103,7 +109,7 @@ export default function TermsPage() {
               Clear rules for a confidential legal workspace.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#475569]">
-              These Terms explain how Dockethq should be used, what the product
+              These Terms explain how DocketHQ should be used, what the product
               does and does not guarantee, and the responsibilities users keep
               when managing litigation data.
             </p>

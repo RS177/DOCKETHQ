@@ -71,7 +71,7 @@ function reminderBody(reminder: DueReminder) {
     `Court: ${court}`,
     `Next hearing: ${date}`,
     "",
-    "Open Dockethq to review the matter before the hearing.",
+    "Open DocketHQ to review the matter before the hearing.",
   ].join("\n");
 }
 

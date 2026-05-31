@@ -114,7 +114,7 @@ export function DashboardPasscodeGate({
         const nextLock = {
           workspaceId: member.firm_id,
           firmId: member.firm_id,
-          firmName: firmRecord.name || "Dockethq workspace",
+          firmName: firmRecord.name || "DocketHQ workspace",
           pinHash:
             firmRecord.dashboard_pin_hash ||
             currentUser.user_metadata?.dashboard_pin_hash ||
@@ -134,7 +134,7 @@ export function DashboardPasscodeGate({
       const nextLock = {
         workspaceId: currentUser.id,
         firmId: null,
-        firmName: currentUser.user_metadata?.firm_name || "Dockethq workspace",
+        firmName: currentUser.user_metadata?.firm_name || "DocketHQ workspace",
         pinHash: currentUser.user_metadata?.dashboard_pin_hash || null,
         pinSalt: currentUser.user_metadata?.dashboard_pin_salt || null,
       };
@@ -253,7 +253,7 @@ export function DashboardPasscodeGate({
       setPin("");
       notify({
         title: "Wrong dashboard code",
-        description: "Try the 4-digit code for this Dockethq workspace.",
+        description: "Try the 4-digit code for this DocketHQ workspace.",
         variant: "error",
       });
       return;
@@ -304,7 +304,7 @@ export function DashboardPasscodeGate({
     setResetStep("otp");
     notify({
       title: "OTP sent",
-      description: "Check your email for the Dockethq verification code.",
+      description: "Check your email for the DocketHQ verification code.",
       variant: "success",
     });
   }
@@ -440,7 +440,7 @@ export function DashboardPasscodeGate({
         </div>
 
         <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">
-          {lock?.firmName || "Dockethq workspace"}
+          {lock?.firmName || "DocketHQ workspace"}
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight">
           {mode === "create" ? "Create dashboard code" : "Unlock dashboard"}
@@ -538,7 +538,7 @@ export function DashboardPasscodeGate({
                     Reset with email OTP
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-stone-400">
-                    Enter your signed-in account email. Dockethq will send an
+                    Enter your signed-in account email. DocketHQ will send an
                     OTP before allowing a new dashboard code.
                   </p>
                 </div>

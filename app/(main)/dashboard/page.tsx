@@ -124,11 +124,11 @@ function EmptyDashboardState({
             First case setup
           </p>
           <h2 className="mt-3 max-w-2xl text-4xl font-semibold tracking-tight">
-            Add one CNR and Dockethq becomes useful immediately.
+            Add one CNR and DocketHQ becomes useful immediately.
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-7 text-[#64748B]">
             The dashboard is intentionally quiet until a case exists. Start with
-            one CNR, then Dockethq can show case status, next hearing,
+            one CNR, then DocketHQ can show case status, next hearing,
             verification state, and reminders around that matter.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -228,7 +228,7 @@ export default function DashboardPage() {
   const [events, setEvents] = useState<TimelineItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [workspace, setWorkspace] = useState<WorkspaceSummary>({
-    firmName: "Dockethq workspace",
+    firmName: "DocketHQ workspace",
     practiceType: "solo",
     role: "owner",
     planType: "free",
@@ -271,7 +271,7 @@ export default function DashboardPage() {
               firmName:
                 firm?.name ||
                 user.user_metadata?.firm_name ||
-                "Dockethq workspace",
+                "DocketHQ workspace",
               practiceType: effectivePracticeType(
                 firm?.practice_type || user.user_metadata?.practice_type,
                 firm?.plan_type
@@ -282,7 +282,7 @@ export default function DashboardPage() {
           }
         } else if (!ignore) {
           setWorkspace({
-            firmName: user.user_metadata?.firm_name || "Dockethq workspace",
+            firmName: user.user_metadata?.firm_name || "DocketHQ workspace",
             practiceType: normalizePracticeType(
               user.user_metadata?.practice_type
             ),

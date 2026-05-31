@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Bell, CheckCircle2, Clock3, Play, ShieldCheck } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
+import { LandingAnchor } from "./landing-anchor";
 import { dashboardRows, proofBadges } from "./landing-data";
 import { NetworkBackground } from "./network-background";
 
@@ -20,21 +21,21 @@ export function HeroSection() {
           </div>
 
           <div className="hidden items-center gap-7 text-xs font-bold uppercase tracking-[0.14em] text-white/70 lg:flex">
-            <a href="#features" className="transition hover:text-[#D4A843]">
+            <LandingAnchor href="#features" className="transition hover:text-[#D4A843]">
               Features
-            </a>
-            <a href="#workflow" className="transition hover:text-[#D4A843]">
+            </LandingAnchor>
+            <LandingAnchor href="#workflow" className="transition hover:text-[#D4A843]">
               How it works
-            </a>
-            <a href="#pricing" className="transition hover:text-[#D4A843]">
+            </LandingAnchor>
+            <LandingAnchor href="#pricing" className="transition hover:text-[#D4A843]">
               Pricing
-            </a>
-            <a href="#resources" className="transition hover:text-[#D4A843]">
+            </LandingAnchor>
+            <LandingAnchor href="#resources" className="transition hover:text-[#D4A843]">
               Resources
-            </a>
-            <a href="#demo" className="transition hover:text-[#D4A843]">
+            </LandingAnchor>
+            <LandingAnchor href="#demo" className="transition hover:text-[#D4A843]">
               Demo
-            </a>
+            </LandingAnchor>
           </div>
 
           <div className="flex items-center gap-2">
@@ -90,13 +91,13 @@ export function HeroSection() {
                 <ArrowRight className="h-4 w-4" />
               </span>
             </Link>
-            <a
+            <LandingAnchor
               href="#demo"
               className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/7 px-6 py-4 font-bold text-white transition hover:-translate-y-1 hover:border-[#D4A843]/60 hover:bg-white/12"
             >
               <Play className="h-4 w-4" />
               See it in action
-            </a>
+            </LandingAnchor>
           </div>
 
           <div className="mt-10 grid gap-3 text-sm text-white/68 sm:grid-cols-2">

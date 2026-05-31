@@ -61,7 +61,7 @@ export default function SignupPage() {
       const termsError = {
         title: "Accept the Terms to continue",
         description:
-          "Read and accept Dockethq's Terms of Service before creating a workspace.",
+          "Read and accept DocketHQ's Terms of Service before creating a workspace.",
       };
       setAuthError(termsError);
       notify({
@@ -129,11 +129,11 @@ export default function SignupPage() {
         </div>
 
         <h1 className="mt-6 text-4xl font-semibold tracking-tight">
-          Create your Dockethq workspace
+          Create your DocketHQ workspace
         </h1>
 
         <p className="mt-3 text-sm leading-6 text-stone-400">
-          Tell us how you practice so Dockethq can set up the right workspace
+          Tell us how you practice so DocketHQ can set up the right workspace
           from day one.
         </p>
 
@@ -244,7 +244,7 @@ export default function SignupPage() {
               className="mt-1 h-4 w-4 rounded border-white/20 bg-black accent-stone-100"
             />
             <span>
-              I have read and agree to Dockethq&apos;s{" "}
+              I have read and agree to DocketHQ&apos;s{" "}
               <Link
                 href="/terms"
                 target="_blank"
@@ -252,7 +252,7 @@ export default function SignupPage() {
               >
                 Terms of Service
               </Link>
-              . I understand Dockethq is workflow software and not a substitute
+              . I understand DocketHQ is workflow software and not a substitute
               for official court records.
             </span>
           </label>
