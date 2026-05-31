@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function FinalCtaSection() {
   return (
-    <section id="demo" className="bg-[#F8F7F4] px-4 pb-24 pt-12 sm:px-6" data-reveal>
+    <section className="bg-[#F8F7F4] px-4 pb-24 pt-12 sm:px-6" data-reveal>
       <div className="mx-auto max-w-7xl overflow-hidden rounded-[24px] border border-white/10 bg-[#0A0F1E] p-8 text-white shadow-2xl shadow-[#0A0F1E]/25 sm:p-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_0.7fr] lg:items-end">
           <div>
@@ -19,7 +19,7 @@ export function FinalCtaSection() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+          <div className="flex flex-col gap-3">
             <Link
               href="/signup?redirectTo=/onboarding"
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-md bg-[#2D6BFF] px-6 py-4 font-bold text-white transition hover:-translate-y-1"
@@ -30,13 +30,6 @@ export function FinalCtaSection() {
                 <ArrowRight className="h-4 w-4" />
               </span>
             </Link>
-            <a
-              href="#resources"
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/[0.06] px-6 py-4 font-bold text-white transition hover:-translate-y-1 hover:bg-white/[0.1]"
-            >
-              <Play className="h-4 w-4" />
-              Book a demo
-            </a>
           </div>
         </div>
       </div>

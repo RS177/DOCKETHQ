@@ -157,7 +157,6 @@ export const dashboardRows = [
 export const socialLinks = [
   ["LinkedIn", "#"],
   ["X", "#"],
-  ["Contact", "#demo"],
 ];
 
 export const footerLinks = [

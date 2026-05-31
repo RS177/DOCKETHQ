@@ -78,14 +78,14 @@ export function PricingSection() {
               </ul>
 
               <Link
-                href={plan.name === "Custom Workflow" ? "#demo" : "/signup?redirectTo=/onboarding"}
+                href="/signup?redirectTo=/onboarding"
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-md px-5 py-3 font-bold transition hover:-translate-y-0.5 ${
                   plan.recommended
                     ? "bg-[#2D6BFF] text-white"
                     : "bg-[#0A0F1E] text-white"
                 }`}
               >
-                {plan.name === "Custom Workflow" ? "Plan custom workflow" : "Start free trial"}
+                {plan.name === "Custom Workflow" ? "Start with free case" : "Start free trial"}
               </Link>
             </article>
           ))}

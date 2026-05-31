@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, LogIn } from "lucide-react";
 import { friendlyAuthError, type FriendlyAuthError } from "@/app/lib/auth-errors";
 import { supabase } from "@/app/lib/supabase";
@@ -15,13 +15,53 @@ export default function LoginPage() {
   const notify = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signupHref, setSignupHref] = useState("/signup");
   const [authError, setAuthError] = useState<FriendlyAuthError | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function continueExistingSession() {
+      const redirectTo =
+        new URLSearchParams(window.location.search).get("redirectTo") ||
+        "/dashboard";
+
+      setSignupHref(
+        `/signup?redirectTo=${encodeURIComponent(
+          redirectTo.startsWith("/") ? redirectTo : "/onboarding"
+        )}`
+      );
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session || ignore) return;
+
+      await fetch("/api/auth/session-marker", {
+        method: "POST",
+      });
+
+      if (!ignore) {
+        router.replace(redirectTo.startsWith("/") ? redirectTo : "/dashboard");
+        router.refresh();
+      }
+    }
+
+    void continueExistingSession();
+
+    return () => {
+      ignore = true;
+    };
+  }, [router]);
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
 
-    if (!email || !password) {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedEmail || !password) {
       const missingError = {
         title: "Missing login details",
         description: "Enter both email and password to continue.",
@@ -39,7 +79,7 @@ export default function LoginPage() {
     setLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizedEmail,
       password,
     });
 
@@ -60,11 +100,27 @@ export default function LoginPage() {
       new URLSearchParams(window.location.search).get("redirectTo") ||
       "/dashboard";
 
-    await fetch("/api/auth/session-marker", {
+    const markerResponse = await fetch("/api/auth/session-marker", {
       method: "POST",
     });
 
-    router.push(redirectTo.startsWith("/") ? redirectTo : "/dashboard");
+    if (!markerResponse.ok) {
+      const markerError = {
+        title: "Session could not be started",
+        description:
+          "Your password was accepted, but the private workspace session could not be opened. Refresh and try once more.",
+      };
+      setAuthError(markerError);
+      notify({
+        title: markerError.title,
+        description: markerError.description,
+        variant: "error",
+      });
+      return;
+    }
+
+    router.replace(redirectTo.startsWith("/") ? redirectTo : "/dashboard");
+    router.refresh();
   }
 
   return (
@@ -127,7 +183,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-stone-400">
           No workspace yet?{" "}
-          <Link href="/signup" className="font-semibold text-stone-100">
+          <Link href={signupHref} className="font-semibold text-stone-100">
             Create one
           </Link>
         </p>

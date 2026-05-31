@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Bell, CheckCircle2, Clock3, Play, ShieldCheck } from "lucide-react";
+import { ArrowRight, Bell, CheckCircle2, Clock3, ShieldCheck } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
 import { LandingAnchor } from "./landing-anchor";
 import { dashboardRows, proofBadges } from "./landing-data";
@@ -32,9 +32,6 @@ export function HeroSection() {
             </LandingAnchor>
             <LandingAnchor href="#resources" className="transition hover:text-[#D4A843]">
               Resources
-            </LandingAnchor>
-            <LandingAnchor href="#demo" className="transition hover:text-[#D4A843]">
-              Demo
             </LandingAnchor>
           </div>
 
@@ -92,11 +89,10 @@ export function HeroSection() {
               </span>
             </Link>
             <LandingAnchor
-              href="#demo"
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/7 px-6 py-4 font-bold text-white transition hover:-translate-y-1 hover:border-[#D4A843]/60 hover:bg-white/12"
+              href="#features"
+              className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/7 px-6 py-4 font-bold text-white transition hover:-translate-y-1 hover:border-[#D4A843]/60 hover:bg-white/12"
             >
-              <Play className="h-4 w-4" />
-              See it in action
+              View features
             </LandingAnchor>
           </div>
 

@@ -79,8 +79,10 @@ export default function SignupPage() {
         ? firmName || `${fullName}'s Practice`
         : firmName;
 
-    const { error } = await supabase.auth.signUp({
-      email,
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const { data, error } = await supabase.auth.signUp({
+      email: normalizedEmail,
       password,
       options: {
         data: {
@@ -109,12 +111,30 @@ export default function SignupPage() {
     const redirectTo =
       new URLSearchParams(window.location.search).get("redirectTo") ||
       "/onboarding";
+    const safeRedirect = redirectTo.startsWith("/") ? redirectTo : "/onboarding";
 
-    router.push(
-      `/login?redirectTo=${encodeURIComponent(
-        redirectTo.startsWith("/") ? redirectTo : "/onboarding"
-      )}`
-    );
+    if (data.session) {
+      await fetch("/api/auth/session-marker", {
+        method: "POST",
+      });
+
+      router.replace(safeRedirect);
+      router.refresh();
+      return;
+    }
+
+    const confirmationNotice = {
+      title: "Check your email to finish signup",
+      description:
+        "Open the DocketHQ verification email, then sign in with the same email and password.",
+    };
+    setAuthError(confirmationNotice);
+    setPassword("");
+    notify({
+      title: confirmationNotice.title,
+      description: confirmationNotice.description,
+      variant: "success",
+    });
   }
 
   return (
