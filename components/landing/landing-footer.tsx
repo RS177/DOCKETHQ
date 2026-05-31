@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { LandingAnchor } from "./landing-anchor";
-import { footerLinks, socialLinks } from "./landing-data";
+import { footerLinks } from "./landing-data";
 
 export function LandingFooter() {
   const groups = ["Product", "Company", "Legal"];
@@ -15,27 +15,6 @@ export function LandingFooter() {
             DocketHQ helps litigation teams manage cases, deadlines, filings,
             tasks, and matter history without turning the practice into admin.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {socialLinks.map(([label, href]) =>
-              href.startsWith("#") ? (
-                <LandingAnchor
-                  key={label}
-                  href={href}
-                  className="rounded-md border border-[#E2D5BD] bg-white px-4 py-2 text-sm font-semibold text-[#0A0F1E] transition hover:-translate-y-0.5 hover:border-[#D4A843]"
-                >
-                  {label}
-                </LandingAnchor>
-              ) : (
-                <a
-                  key={label}
-                  href={href}
-                  className="rounded-md border border-[#E2D5BD] bg-white px-4 py-2 text-sm font-semibold text-[#0A0F1E] transition hover:-translate-y-0.5 hover:border-[#D4A843]"
-                >
-                  {label}
-                </a>
-              ),
-            )}
-          </div>
         </div>
 
         <div className="grid gap-8 sm:grid-cols-3">

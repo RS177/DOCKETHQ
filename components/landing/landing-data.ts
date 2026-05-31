@@ -154,11 +154,6 @@ export const dashboardRows = [
   ["Meera Sharma v. ICICI Bank", "Status verified", "03 Jun", "Checked"],
 ];
 
-export const socialLinks = [
-  ["LinkedIn", "#"],
-  ["X", "#"],
-];
-
 export const footerLinks = [
   ["Product", "Features", "#features"],
   ["Product", "Pricing", "#pricing"],
