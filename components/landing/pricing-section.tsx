@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { LandingAnchor } from "./landing-anchor";
 import { pricing } from "./landing-data";
-import { WAITLIST_MAILTO } from "./waitlist";
+import { WAITLIST_SECTION_ID } from "./waitlist";
 
 export function PricingSection() {
   const [annual, setAnnual] = useState(true);
@@ -77,8 +78,8 @@ export function PricingSection() {
                 ))}
               </ul>
 
-              <a
-                href={WAITLIST_MAILTO}
+              <LandingAnchor
+                href={`#${WAITLIST_SECTION_ID}`}
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-md px-5 py-3 font-bold transition hover:-translate-y-0.5 ${
                   plan.recommended
                     ? "bg-[#2D6BFF] text-white"
@@ -86,7 +87,7 @@ export function PricingSection() {
                 }`}
               >
                 Join the waitlist
-              </a>
+              </LandingAnchor>
             </article>
           ))}
         </div>

@@ -1,9 +1,13 @@
-import { ArrowRight } from "lucide-react";
-import { WAITLIST_MAILTO } from "./waitlist";
+import { WaitlistForm } from "./waitlist-form";
+import { WAITLIST_SECTION_ID } from "./waitlist";
 
 export function FinalCtaSection() {
   return (
-    <section className="bg-[#F8F7F4] px-4 pb-24 pt-12 sm:px-6" data-reveal>
+    <section
+      id={WAITLIST_SECTION_ID}
+      className="scroll-mt-8 bg-[#F8F7F4] px-4 pb-24 pt-12 sm:px-6"
+      data-reveal
+    >
       <div className="mx-auto max-w-7xl overflow-hidden rounded-[24px] border border-white/10 bg-[#0A0F1E] p-8 text-white shadow-2xl shadow-[#0A0F1E]/25 sm:p-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_0.7fr] lg:items-end">
           <div>
@@ -21,16 +25,7 @@ export function FinalCtaSection() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <a
-              href={WAITLIST_MAILTO}
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-md bg-[#2D6BFF] px-6 py-4 font-bold text-white transition hover:-translate-y-1"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition duration-700 group-hover:translate-x-full" />
-              <span className="relative inline-flex items-center gap-2">
-                Join the waitlist
-                <ArrowRight className="h-4 w-4" />
-              </span>
-            </a>
+            <WaitlistForm />
           </div>
         </div>
       </div>

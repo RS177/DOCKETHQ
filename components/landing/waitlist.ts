@@ -1,4 +1,5 @@
 export const WAITLIST_EMAIL = "hello@dockethq.in";
+export const WAITLIST_SECTION_ID = "waitlist";
 
 export const WAITLIST_MAILTO = `mailto:${WAITLIST_EMAIL}?subject=${encodeURIComponent(
   "Add me to DocketHQ early access"
