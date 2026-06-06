@@ -28,10 +28,7 @@ function isAuthorized(request: NextRequest) {
     return true;
   }
 
-  const authHeader = request.headers.get("authorization") === `Bearer ${secret}`;
-  const querySecret = request.nextUrl.searchParams.get("secret") === secret;
-
-  return authHeader || querySecret;
+  return request.headers.get("authorization") === `Bearer ${secret}`;
 }
 
 function caseTitle(reminder: DueReminder) {

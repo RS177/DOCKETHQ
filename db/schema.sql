@@ -457,6 +457,22 @@ AS $$
     );
 $$;
 
+CREATE OR REPLACE FUNCTION can_manage_firm(target_firm_id UUID)
+RETURNS BOOLEAN
+LANGUAGE SQL
+SECURITY DEFINER
+STABLE
+SET search_path = public
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM firm_members
+        WHERE firm_members.firm_id = target_firm_id
+          AND firm_members.user_id = auth.uid()
+          AND firm_members.role IN ('owner', 'admin')
+    );
+$$;
+
 CREATE OR REPLACE FUNCTION can_access_case(target_case cases)
 RETURNS BOOLEAN
 LANGUAGE SQL
@@ -477,8 +493,8 @@ CREATE POLICY "Members can view their firms" ON firms
     FOR SELECT USING (is_firm_member(id));
 
 CREATE POLICY "Members can update their firms" ON firms
-    FOR UPDATE USING (is_firm_member(id))
-    WITH CHECK (is_firm_member(id));
+    FOR UPDATE USING (can_manage_firm(id))
+    WITH CHECK (can_manage_firm(id));
 
 CREATE POLICY "Members can view firm members" ON firm_members
     FOR SELECT USING (is_firm_member(firm_id));
@@ -487,8 +503,8 @@ CREATE POLICY "Members can view firm invites" ON firm_invites
     FOR SELECT USING (is_firm_member(firm_id));
 
 CREATE POLICY "Members can manage firm invites" ON firm_invites
-    FOR ALL USING (is_firm_member(firm_id))
-    WITH CHECK (is_firm_member(firm_id));
+    FOR ALL USING (can_manage_firm(firm_id))
+    WITH CHECK (can_manage_firm(firm_id));
 
 CREATE POLICY "Members can view firm clients" ON clients
     FOR SELECT USING (is_firm_member(firm_id));

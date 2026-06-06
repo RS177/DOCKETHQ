@@ -26,12 +26,23 @@ export async function GET(_request: NextRequest, { params }: Params) {
 
   return NextResponse.json({
     id: invite.id,
-    email: invite.email,
+    email: maskEmail(invite.email),
     role: invite.role,
     status: invite.status,
     created_at: invite.created_at,
     firm_name: firmNameFromInvite(invite),
   });
+}
+
+function maskEmail(email: string) {
+  const [localPart, domain] = email.split("@");
+
+  if (!localPart || !domain) {
+    return "Invite email hidden";
+  }
+
+  const visible = localPart.slice(0, Math.min(2, localPart.length));
+  return `${visible}${"*".repeat(Math.max(3, localPart.length - visible.length))}@${domain}`;
 }
 
 export async function POST(request: NextRequest, { params }: Params) {
