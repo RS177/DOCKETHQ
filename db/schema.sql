@@ -390,6 +390,20 @@ CREATE TABLE audit_logs (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE waitlist_leads (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    city TEXT,
+    practice_type TEXT,
+    source TEXT DEFAULT 'landing',
+    user_agent TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX waitlist_leads_created_idx ON waitlist_leads(created_at DESC);
+
 ALTER TABLE firms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE firm_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE firm_invites ENABLE ROW LEVEL SECURITY;
@@ -407,6 +421,7 @@ ALTER TABLE reminders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE waitlist_leads ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE firms FORCE ROW LEVEL SECURITY;
 ALTER TABLE firm_members FORCE ROW LEVEL SECURITY;
@@ -425,6 +440,7 @@ ALTER TABLE reminders FORCE ROW LEVEL SECURITY;
 ALTER TABLE notifications FORCE ROW LEVEL SECURITY;
 ALTER TABLE payments FORCE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs FORCE ROW LEVEL SECURITY;
+ALTER TABLE waitlist_leads FORCE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION is_firm_member(target_firm_id UUID)
 RETURNS BOOLEAN
@@ -543,6 +559,10 @@ CREATE POLICY "Members can view firm audit logs" ON audit_logs
 
 CREATE POLICY "Members can insert firm audit logs" ON audit_logs
     FOR INSERT WITH CHECK (is_firm_member(firm_id));
+
+CREATE POLICY "waitlist leads are admin only" ON waitlist_leads
+    FOR ALL USING (false)
+    WITH CHECK (false);
 
 CREATE OR REPLACE FUNCTION log_case_audit()
 RETURNS TRIGGER

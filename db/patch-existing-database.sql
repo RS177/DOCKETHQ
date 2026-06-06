@@ -60,6 +60,10 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'notification_channel') THEN
     CREATE TYPE notification_channel AS ENUM ('in_app', 'email', 'sms', 'whatsapp');
   END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'notification_status') THEN
+    CREATE TYPE notification_status AS ENUM ('queued', 'sent', 'failed', 'cancelled');
+  END IF;
 END $$;
 
 CREATE TABLE IF NOT EXISTS firms (
@@ -222,13 +226,15 @@ BEGIN
     WHERE table_name = 'cases' AND column_name = 'current_status'
   ) THEN
     UPDATE cases
-    SET status = CASE
+    SET status = (
+      CASE
       WHEN LOWER(current_status) LIKE '%dismiss%' THEN 'dismissed'
       WHEN LOWER(current_status) LIKE '%disposed%' THEN 'disposed'
       WHEN LOWER(current_status) LIKE '%stay%' THEN 'stayed'
       WHEN LOWER(current_status) LIKE '%pending%' THEN 'pending'
       ELSE COALESCE(status::text, 'unknown')
-    END;
+      END
+    )::case_status;
   END IF;
 
   IF EXISTS (
@@ -238,7 +244,8 @@ BEGIN
     UPDATE cases
     SET next_hearing_date = COALESCE(next_hearing_date, next_hearing::date)
     WHERE next_hearing IS NOT NULL
-      AND next_hearing_date IS NULL;
+      AND next_hearing_date IS NULL
+      AND next_hearing::text ~ '^\d{4}-\d{2}-\d{2}$';
   END IF;
 END $$;
 
@@ -347,6 +354,22 @@ CREATE INDEX IF NOT EXISTS case_events_case_time_idx
 CREATE INDEX IF NOT EXISTS case_sync_runs_case_created_idx
   ON case_sync_runs(case_id, created_at DESC);
 
+CREATE TABLE IF NOT EXISTS case_hearings (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  firm_id UUID NOT NULL REFERENCES firms(id) ON DELETE CASCADE,
+  case_id UUID NOT NULL REFERENCES cases(id) ON DELETE CASCADE,
+  hearing_date DATE NOT NULL,
+  purpose TEXT,
+  outcome_notes TEXT,
+  order_document_url TEXT,
+  source event_source NOT NULL DEFAULT 'manual',
+  created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS case_hearings_case_date_idx
+  ON case_hearings(case_id, hearing_date DESC);
+
 CREATE TABLE IF NOT EXISTS reminders (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   firm_id UUID REFERENCES firms(id) ON DELETE CASCADE,
@@ -374,6 +397,22 @@ CREATE INDEX IF NOT EXISTS reminders_case_time_idx
 CREATE INDEX IF NOT EXISTS reminders_status_time_idx
   ON reminders(status, remind_at);
 
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  firm_id UUID NOT NULL REFERENCES firms(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  case_id UUID REFERENCES cases(id) ON DELETE CASCADE,
+  channel notification_channel NOT NULL DEFAULT 'in_app',
+  title TEXT NOT NULL,
+  body TEXT,
+  status notification_status NOT NULL DEFAULT 'queued',
+  sent_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS notifications_firm_created_idx
+  ON notifications(firm_id, created_at DESC);
+
 CREATE TABLE IF NOT EXISTS audit_logs (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   firm_id UUID REFERENCES firms(id) ON DELETE CASCADE,
@@ -385,6 +424,21 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS waitlist_leads (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  city TEXT,
+  practice_type TEXT,
+  source TEXT DEFAULT 'landing',
+  user_agent TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS waitlist_leads_created_idx
+  ON waitlist_leads(created_at DESC);
+
 ALTER TABLE firms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE firm_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE firm_invites ENABLE ROW LEVEL SECURITY;
@@ -392,8 +446,11 @@ ALTER TABLE cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_snapshots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_sync_runs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE case_hearings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reminders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE waitlist_leads ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE firms FORCE ROW LEVEL SECURITY;
 ALTER TABLE firm_members FORCE ROW LEVEL SECURITY;
@@ -402,7 +459,9 @@ ALTER TABLE cases FORCE ROW LEVEL SECURITY;
 ALTER TABLE case_events FORCE ROW LEVEL SECURITY;
 ALTER TABLE case_snapshots FORCE ROW LEVEL SECURITY;
 ALTER TABLE case_sync_runs FORCE ROW LEVEL SECURITY;
+ALTER TABLE case_hearings FORCE ROW LEVEL SECURITY;
 ALTER TABLE reminders FORCE ROW LEVEL SECURITY;
+ALTER TABLE notifications FORCE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs FORCE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION is_firm_member(target_firm_id UUID)
@@ -448,9 +507,12 @@ DROP POLICY IF EXISTS "Members can manage firm snapshots" ON case_snapshots;
 DROP POLICY IF EXISTS "Members can view firm snapshots" ON case_snapshots;
 DROP POLICY IF EXISTS "Members can manage firm sync runs" ON case_sync_runs;
 DROP POLICY IF EXISTS "Members can view firm sync runs" ON case_sync_runs;
+DROP POLICY IF EXISTS "Members can manage firm hearings" ON case_hearings;
 DROP POLICY IF EXISTS "Members can manage firm reminders" ON reminders;
+DROP POLICY IF EXISTS "Members can view firm notifications" ON notifications;
 DROP POLICY IF EXISTS "Members can view firm audit logs" ON audit_logs;
 DROP POLICY IF EXISTS "Members can insert firm audit logs" ON audit_logs;
+DROP POLICY IF EXISTS "waitlist leads are admin only" ON waitlist_leads;
 
 CREATE POLICY "Members can view their firms" ON firms
   FOR SELECT USING (is_firm_member(id));
@@ -495,15 +557,26 @@ CREATE POLICY "Members can manage firm sync runs" ON case_sync_runs
   FOR ALL USING (is_firm_member(firm_id))
   WITH CHECK (is_firm_member(firm_id));
 
+CREATE POLICY "Members can manage firm hearings" ON case_hearings
+  FOR ALL USING (is_firm_member(firm_id))
+  WITH CHECK (is_firm_member(firm_id));
+
 CREATE POLICY "Members can manage firm reminders" ON reminders
   FOR ALL USING (firm_id IS NULL OR is_firm_member(firm_id))
   WITH CHECK (firm_id IS NULL OR is_firm_member(firm_id));
+
+CREATE POLICY "Members can view firm notifications" ON notifications
+  FOR SELECT USING (is_firm_member(firm_id));
 
 CREATE POLICY "Members can view firm audit logs" ON audit_logs
   FOR SELECT USING (is_firm_member(firm_id));
 
 CREATE POLICY "Members can insert firm audit logs" ON audit_logs
   FOR INSERT WITH CHECK (is_firm_member(firm_id));
+
+CREATE POLICY "waitlist leads are admin only" ON waitlist_leads
+  FOR ALL USING (false)
+  WITH CHECK (false);
 
 CREATE OR REPLACE FUNCTION log_case_audit()
 RETURNS TRIGGER
