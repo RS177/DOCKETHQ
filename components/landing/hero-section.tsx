@@ -17,8 +17,8 @@ export function HeroSection() {
 
       <header className="relative z-20 border-b border-white/10 bg-[#0A0F1E]/72 px-4 py-4 shadow-[0_1px_0_rgba(212,168,67,0.08)] backdrop-blur-xl sm:px-6">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="rounded-md border border-[#D4A843]/20 bg-[#F8F7F4]/96 px-3 py-2 shadow-lg shadow-black/20 ring-1 ring-white/10">
-            <BrandLogo />
+          <div className="rounded-md border border-[#D4A843]/30 bg-[#0A0F1E]/80 px-3 py-2 shadow-lg shadow-black/25 ring-1 ring-white/10 backdrop-blur">
+            <BrandLogo className="[&_span]:text-[#F8F7F4]" />
           </div>
 
           <div className="hidden items-center gap-7 text-xs font-bold uppercase tracking-[0.14em] text-[#F8F7F4]/72 lg:flex">
