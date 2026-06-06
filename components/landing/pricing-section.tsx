@@ -1,7 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { LandingAnchor } from "./landing-anchor";
 import { pricing } from "./landing-data";
-import { WAITLIST_SECTION_ID } from "./waitlist";
+import { WAITLIST_MAILTO, WAITLIST_SECTION_ID } from "./waitlist";
 
 export function PricingSection() {
   return (
@@ -23,52 +23,78 @@ export function PricingSection() {
         </div>
 
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {pricing.map((plan) => (
-            <article
-              key={plan.name}
-              className={`relative rounded-[18px] border p-6 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl ${
-                plan.recommended
-                  ? "border-[#D4A843] bg-[#0A0F1E] text-white shadow-[#0A0F1E]/20"
-                  : "border-[#E2D5BD] bg-white text-[#0A0F1E] shadow-[#CBB98F]/10"
-              }`}
-            >
-              {plan.recommended && (
-                <div className="absolute right-5 top-5 rounded-full bg-[#D4A843] px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#0A0F1E]">
-                  Recommended
-                </div>
-              )}
-              <h3 className="text-2xl font-semibold">{plan.name}</h3>
-              <p className={`mt-3 text-sm leading-6 ${plan.recommended ? "text-white/62" : "text-[#5E6A7D]"}`}>
-                {plan.description}
-              </p>
-              <p className="mt-8 text-5xl font-semibold">
-                {plan.price}
-                {plan.price !== "Free" && (
-                  <span className="text-base font-medium opacity-60">/mo</span>
-                )}
-              </p>
+          {pricing.map((plan) => {
+            const isFree = plan.price === "Free";
+            const ctaLabel = isFree
+              ? "Join the waitlist"
+              : plan.name === "Pro"
+                ? "Request Pro access"
+                : "Discuss custom workflow";
+            const paidHref =
+              plan.name === "Pro"
+                ? `${WAITLIST_MAILTO}&body=${encodeURIComponent(
+                    "I want to activate the DocketHQ Pro plan."
+                  )}`
+                : `${WAITLIST_MAILTO}&body=${encodeURIComponent(
+                    "I want to discuss the DocketHQ Custom Workflow plan for my firm."
+                  )}`;
 
-              <ul className="mt-8 space-y-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex gap-3 text-sm">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4A843]" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <LandingAnchor
-                href={`#${WAITLIST_SECTION_ID}`}
-                className={`mt-8 inline-flex w-full items-center justify-center rounded-md px-5 py-3 font-bold transition hover:-translate-y-0.5 ${
+            return (
+              <article
+                key={plan.name}
+                className={`relative rounded-[18px] border p-6 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl ${
                   plan.recommended
-                    ? "bg-[#2D6BFF] text-white"
-                    : "bg-[#0A0F1E] text-white"
+                    ? "border-[#D4A843] bg-[#0A0F1E] text-white shadow-[#0A0F1E]/20"
+                    : "border-[#E2D5BD] bg-white text-[#0A0F1E] shadow-[#CBB98F]/10"
                 }`}
               >
-                Join the waitlist
-              </LandingAnchor>
-            </article>
-          ))}
+                {plan.recommended && (
+                  <div className="absolute right-5 top-5 rounded-full bg-[#D4A843] px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#0A0F1E]">
+                    Recommended
+                  </div>
+                )}
+                <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                <p className={`mt-3 text-sm leading-6 ${plan.recommended ? "text-white/62" : "text-[#5E6A7D]"}`}>
+                  {plan.description}
+                </p>
+                <p className="mt-8 text-5xl font-semibold">
+                  {plan.price}
+                  {plan.price !== "Free" && (
+                    <span className="text-base font-medium opacity-60">/mo</span>
+                  )}
+                </p>
+
+                <ul className="mt-8 space-y-3">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex gap-3 text-sm">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4A843]" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                {isFree ? (
+                  <LandingAnchor
+                    href={`#${WAITLIST_SECTION_ID}`}
+                    className="mt-8 inline-flex w-full items-center justify-center rounded-md bg-[#0A0F1E] px-5 py-3 font-bold text-white transition hover:-translate-y-0.5"
+                  >
+                    {ctaLabel}
+                  </LandingAnchor>
+                ) : (
+                  <a
+                    href={paidHref}
+                    className={`mt-8 inline-flex w-full items-center justify-center rounded-md px-5 py-3 font-bold transition hover:-translate-y-0.5 ${
+                      plan.recommended
+                        ? "bg-[#2D6BFF] text-white"
+                        : "bg-[#0A0F1E] text-white"
+                    }`}
+                  >
+                    {ctaLabel}
+                  </a>
+                )}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
