@@ -1,14 +1,9 @@
-"use client";
-
-import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { LandingAnchor } from "./landing-anchor";
 import { pricing } from "./landing-data";
 import { WAITLIST_SECTION_ID } from "./waitlist";
 
 export function PricingSection() {
-  const [annual, setAnnual] = useState(true);
-
   return (
     <section id="pricing" className="bg-[#F8F7F4] px-4 py-24 sm:px-6" data-reveal>
       <div className="mx-auto max-w-7xl">
@@ -18,28 +13,12 @@ export function PricingSection() {
               Pricing
             </p>
             <h2 className="mt-4 max-w-3xl text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[0.98] tracking-tight text-[#0A0F1E]">
-            Start lean. Add custom workflow when the practice needs it.
+              Start lean. Add custom workflow when the practice needs it.
             </h2>
           </div>
 
-          <div className="flex w-fit rounded-full border border-[#E2D5BD] bg-white p-1 shadow-sm">
-            {[
-              ["monthly", "Monthly"],
-              ["annual", "Annual"],
-            ].map(([key, label]) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setAnnual(key === "annual")}
-                className={`rounded-full px-5 py-2 text-sm font-bold transition ${
-                  annual === (key === "annual")
-                    ? "bg-[#0A0F1E] text-white"
-                    : "text-[#5E6A7D] hover:text-[#0A0F1E]"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
+          <div className="w-fit rounded-full border border-[#E2D5BD] bg-white px-5 py-3 text-sm font-bold text-[#5E6A7D] shadow-sm">
+            Monthly MVP pricing
           </div>
         </div>
 
@@ -63,7 +42,7 @@ export function PricingSection() {
                 {plan.description}
               </p>
               <p className="mt-8 text-5xl font-semibold">
-                {annual ? plan.annual : plan.price}
+                {plan.price}
                 {plan.price !== "Free" && (
                   <span className="text-base font-medium opacity-60">/mo</span>
                 )}

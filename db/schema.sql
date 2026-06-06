@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Dockethq litigation workflow schema.
+-- DocketHQ litigation workflow schema.
 -- Design principle: keep the latest case state on cases, and store every
 -- meaningful legal/workflow movement in append-only event/sync tables.
 

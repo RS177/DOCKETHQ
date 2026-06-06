@@ -1,5 +1,5 @@
 -- Run this in Supabase SQL Editor if your existing database was created
--- before the newer Dockethq schema. It keeps old data and adds the columns
+-- before the newer DocketHQ schema. It keeps old data and adds the columns
 -- the current app expects.
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

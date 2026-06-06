@@ -28,7 +28,11 @@ export default function SignupPage() {
   async function handleSignup(event: React.FormEvent) {
     event.preventDefault();
 
-    if (!fullName || !email || !password) {
+    const normalizedName = fullName.trim();
+    const normalizedFirmName = firmName.trim();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedName || !normalizedEmail || !password) {
       const missingError = {
         title: "Missing account details",
         description:
@@ -43,7 +47,7 @@ export default function SignupPage() {
       return;
     }
 
-    if (practiceType === "firm" && !firmName) {
+    if (practiceType === "firm" && !normalizedFirmName) {
       const firmError = {
         title: "Firm name required",
         description: "Firm owner workspaces need a firm or chamber name.",
@@ -76,17 +80,15 @@ export default function SignupPage() {
     setLoading(true);
     const workspaceName =
       practiceType === "solo"
-        ? firmName || `${fullName}'s Practice`
-        : firmName;
-
-    const normalizedEmail = email.trim().toLowerCase();
+        ? normalizedFirmName || `${normalizedName}'s Practice`
+        : normalizedFirmName;
 
     const { data, error } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
       options: {
         data: {
-          full_name: fullName,
+          full_name: normalizedName,
           firm_name: workspaceName,
           practice_type: practiceType,
           terms_version: TERMS_VERSION,
@@ -116,6 +118,9 @@ export default function SignupPage() {
     if (data.session) {
       await fetch("/api/auth/session-marker", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
       });
 
       router.replace(safeRedirect);

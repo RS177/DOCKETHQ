@@ -604,7 +604,7 @@ export default function AccountSettingsPage() {
                     onChange={(event) => setWorkflowNotes(event.target.value)}
                     rows={4}
                     className="w-full rounded-md border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
-                    placeholder="How does the firm assign cases, review filings, remind clients, and prepare for hearings?"
+                    placeholder="How does the firm add CNRs, verify case status, assign owners, and prepare for hearings?"
                   />
                 </label>
               </>

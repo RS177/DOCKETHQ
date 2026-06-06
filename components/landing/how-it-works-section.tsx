@@ -9,7 +9,7 @@ export function HowItWorksSection() {
             How it works
           </p>
           <h2 className="mt-4 text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[0.98] tracking-tight">
-            From intake to verdict, the chain stays visible.
+            From CNR entry to hearing reminder, the chain stays visible.
           </h2>
         </div>
 

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createSupabaseAdmin } from "@/app/lib/supabaseAdmin";
 import { fetchCourtCase } from "../../lib/courtScraper";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +14,41 @@ function privateJson(body: unknown, init?: ResponseInit) {
 
 export async function POST(req: Request) {
   try {
+    const authorization = req.headers.get("authorization") || "";
+    const token = authorization.startsWith("Bearer ")
+      ? authorization.slice("Bearer ".length)
+      : "";
+
+    if (!token) {
+      return privateJson(
+        {
+          success: false,
+          error: "Log in before checking a CNR.",
+          code: "UNAUTHORIZED",
+          data: null,
+        },
+        { status: 401 }
+      );
+    }
+
+    const supabase = createSupabaseAdmin();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser(token);
+
+    if (userError || !user) {
+      return privateJson(
+        {
+          success: false,
+          error: "Your session could not be verified. Log in again.",
+          code: "UNAUTHORIZED",
+          data: null,
+        },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const cnr = typeof body.cnr === "string" ? body.cnr : "";
 

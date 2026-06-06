@@ -54,7 +54,8 @@ type CourtLookup = {
 type CourtLookupError = {
   success: false;
   error: string;
-  officialSearchUrl: string;
+  code?: string;
+  officialSearchUrl?: string;
 };
 
 type CaseStatus = CourtLookup["data"]["status"];
@@ -370,9 +371,29 @@ export default function NewCasePage() {
     setLookup(null);
     setLookupError(null);
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session?.access_token) {
+      setLookupLoading(false);
+      notify({
+        title: "Login required",
+        description: "Log in before checking a CNR.",
+        variant: "warning",
+      });
+      router.push(
+        `/login?redirectTo=${encodeURIComponent(
+          `/cases/new?cnr=${cleanCnr(cnrNumber)}`
+        )}`
+      );
+      return null;
+    }
+
     const res = await fetch("/api/fetch-case", {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${session.access_token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

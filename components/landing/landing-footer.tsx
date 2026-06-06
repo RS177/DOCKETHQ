@@ -12,8 +12,9 @@ export function LandingFooter() {
         <div>
           <BrandLogo />
           <p className="mt-4 max-w-md text-sm leading-6 text-[#5E6A7D]">
-            DocketHQ helps litigation teams manage cases, deadlines, filings,
-            tasks, and matter history without turning the practice into admin.
+            DocketHQ helps litigation teams track CNR-based case status,
+            hearing dates, verification history, and reminders without turning
+            the practice into admin.
           </p>
         </div>
 

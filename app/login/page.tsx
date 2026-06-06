@@ -41,6 +41,9 @@ export default function LoginPage() {
 
       await fetch("/api/auth/session-marker", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
       });
 
       if (!ignore) {
@@ -78,7 +81,7 @@ export default function LoginPage() {
     setAuthError(null);
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: normalizedEmail,
       password,
     });
@@ -100,8 +103,28 @@ export default function LoginPage() {
       new URLSearchParams(window.location.search).get("redirectTo") ||
       "/dashboard";
 
+    const accessToken = data.session?.access_token;
+
+    if (!accessToken) {
+      const sessionError = {
+        title: "Session could not be started",
+        description:
+          "Your password was accepted, but no private session was returned. Refresh and try once more.",
+      };
+      setAuthError(sessionError);
+      notify({
+        title: sessionError.title,
+        description: sessionError.description,
+        variant: "error",
+      });
+      return;
+    }
+
     const markerResponse = await fetch("/api/auth/session-marker", {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
     if (!markerResponse.ok) {
@@ -177,7 +200,7 @@ export default function LoginPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-stone-100 px-4 py-3 font-semibold text-stone-950 transition hover:bg-white disabled:opacity-60"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? "Logging in..." : "Log in"}
           </button>
         </form>
 

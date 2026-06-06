@@ -5,18 +5,18 @@ export function ResourcesSection() {
         <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#8B6A32]">
-              Resources
+              What it does
             </p>
             <h2 className="mt-4 text-[clamp(2.3rem,4vw,3.6rem)] font-semibold leading-[0.98] tracking-tight text-[#0A0F1E]">
-              Legal operations content that respects the docket.
+              A focused workspace for cases that need watching.
             </h2>
           </div>
 
           <div className="grid gap-3">
             {[
-              "How to design a deadline-safe litigation workflow",
-              "What a matter audit trail should capture",
-              "How AI drafting should fit into lawyer review",
+              "Save one matter from a CNR and keep the latest status visible.",
+              "Record source checks so the team knows what was verified.",
+              "Create hearing reminders before the next listed date.",
             ].map((item) => (
               <div
                 key={item}

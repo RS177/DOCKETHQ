@@ -10,12 +10,12 @@ export function FeaturesSection() {
               Core features
             </p>
             <h2 className="mt-4 max-w-3xl text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[0.98] tracking-tight text-[#0A0F1E]">
-              Every deadline. Every filing. Every case. Covered.
+              Case status, hearing dates, and reminders in one place.
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-[#5E6A7D]">
-            Built specifically for litigation work: dockets, motions, hearings,
-            discovery, filings, reminders, and jurisdiction-sensitive dates.
+            Built for the first DocketHQ promise: enter a CNR, save the matter,
+            track the important status, and keep hearing reminders visible.
           </p>
         </div>
 

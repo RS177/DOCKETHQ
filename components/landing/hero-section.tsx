@@ -32,7 +32,7 @@ export function HeroSection() {
               Pricing
             </LandingAnchor>
             <LandingAnchor href="#resources" className="transition hover:text-[#D4A843]">
-              Resources
+              What it does
             </LandingAnchor>
           </div>
 

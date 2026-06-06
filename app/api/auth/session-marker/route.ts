@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { createSupabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 const COOKIE_NAME = "dockethq_session";
 const THIRTY_DAYS = 60 * 60 * 24 * 30;
@@ -13,7 +14,32 @@ function cookieOptions() {
   };
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const authorization = request.headers.get("authorization") || "";
+  const token = authorization.startsWith("Bearer ")
+    ? authorization.slice("Bearer ".length)
+    : "";
+
+  if (!token) {
+    return NextResponse.json(
+      { error: "A verified login session is required." },
+      { status: 401 }
+    );
+  }
+
+  const supabase = createSupabaseAdmin();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser(token);
+
+  if (error || !user) {
+    return NextResponse.json(
+      { error: "Login session could not be verified." },
+      { status: 401 }
+    );
+  }
+
   const response = new NextResponse(null, { status: 204 });
 
   response.cookies.set(COOKIE_NAME, "active", cookieOptions());

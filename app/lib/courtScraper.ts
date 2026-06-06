@@ -181,7 +181,7 @@ function normalizeCourtPayload(
   );
   const latestUpdate =
     pickString(record, ["latestUpdate", "latest_update", "lastOrder", "last_order"]) ||
-    `${statusLabel}${currentStage ? ` · ${currentStage}` : ""}`;
+    `${statusLabel}${currentStage ? ` - ${currentStage}` : ""}`;
 
   return {
     cnrNumber,

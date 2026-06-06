@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   AlertTriangle,
   CalendarDays,
@@ -312,6 +312,7 @@ function changeEntries(changes: Record<string, unknown> | null | undefined) {
 
 export default function CaseDetailsPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
   const notify = useToast();
 
@@ -475,9 +476,25 @@ export default function CaseDetailsPage() {
     setRefreshing(true);
     const startedAt = new Date().toISOString();
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session?.access_token) {
+      setRefreshing(false);
+      notify({
+        title: "Login required",
+        description: "Log in again before refreshing court status.",
+        variant: "warning",
+      });
+      router.push(`/login?redirectTo=${encodeURIComponent(`/cases/${caseData.id}`)}`);
+      return;
+    }
+
     const response = await fetch("/api/fetch-case", {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${session.access_token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ cnr: caseData.cnr_number }),

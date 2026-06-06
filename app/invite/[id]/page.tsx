@@ -108,6 +108,9 @@ export default function InvitePage() {
 
     await fetch("/api/auth/session-marker", {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
     });
 
     notify({

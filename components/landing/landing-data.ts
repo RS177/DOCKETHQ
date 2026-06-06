@@ -81,7 +81,7 @@ export const features = [
   },
   {
     title: "Quiet dashboard",
-    copy: "Show today’s useful case-tracking signals without turning the product into a full law-firm ERP.",
+    copy: "Show today's useful case-tracking signals without turning the product into a full law-firm ERP.",
     icon: Scale,
     accent: "from-violet-300/20 to-transparent",
   },
@@ -109,7 +109,6 @@ export const pricing = [
   {
     name: "Starter",
     price: "Free",
-    annual: "Free",
     description: "For testing DocketHQ with one live matter.",
     features: [
       "1 user",
@@ -122,7 +121,6 @@ export const pricing = [
   {
     name: "Pro",
     price: "Rs 499",
-    annual: "Rs 499",
     description: "For active litigators managing repeat matters.",
     features: [
       "1 user",
@@ -136,7 +134,6 @@ export const pricing = [
   {
     name: "Custom Workflow",
     price: "Rs 999",
-    annual: "Rs 999",
     description: "For firms or lawyers who want DocketHQ shaped around their practice.",
     features: [
       "Everything in Pro",
@@ -157,10 +154,9 @@ export const dashboardRows = [
 export const footerLinks = [
   ["Product", "Features", "#features"],
   ["Product", "Pricing", "#pricing"],
-  ["Company", "Security", "#trust"],
-  ["Company", "Resources", "#resources"],
+  ["Company", "Workflow", "#workflow"],
+  ["Company", "Waitlist", "#waitlist"],
   ["Legal", "Terms", "/terms"],
-  ["Legal", "Privacy", "/terms"],
 ];
 
 export const proofBadges = [
