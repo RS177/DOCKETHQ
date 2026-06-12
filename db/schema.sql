@@ -481,12 +481,12 @@ STABLE
 SET search_path = public
 AS $$
     SELECT
-        is_firm_member(target_case.firm_id)
+        is_firm_member((target_case).firm_id)
         OR (
-            target_case.firm_id IS NULL
+            (target_case).firm_id IS NULL
             AND to_jsonb(target_case)->>'user id' = auth.uid()::TEXT
         )
-        OR target_case.created_by = auth.uid();
+        OR (target_case).created_by = auth.uid();
 $$;
 
 CREATE POLICY "Members can view their firms" ON firms
