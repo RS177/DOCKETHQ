@@ -29,7 +29,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const supabase = createSupabaseAdmin();
+  let supabase;
+
+  try {
+    supabase = createSupabaseAdmin();
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Server is not configured to save waitlist leads.",
+      },
+      { status: 500 }
+    );
+  }
 
   const { error } = await supabase.from("waitlist_leads").upsert(
     {

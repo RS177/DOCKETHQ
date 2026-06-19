@@ -49,7 +49,20 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json();
+    const body = await req.json().catch(() => null);
+
+    if (!body || typeof body !== "object") {
+      return privateJson(
+        {
+          success: false,
+          error: "Send a valid JSON body with a CNR number.",
+          code: "INVALID_JSON",
+          data: null,
+        },
+        { status: 400 }
+      );
+    }
+
     const cnr = typeof body.cnr === "string" ? body.cnr : "";
 
     const result = await fetchCourtCase(cnr);

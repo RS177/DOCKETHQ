@@ -9,7 +9,21 @@ type Params = {
 
 export async function GET(_request: NextRequest, { params }: Params) {
   const { id } = await params;
-  const supabase = createSupabaseAdmin();
+  let supabase;
+
+  try {
+    supabase = createSupabaseAdmin();
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Server is not configured to load firm invites.",
+      },
+      { status: 500 }
+    );
+  }
 
   const { data: invite, error } = await supabase
     .from("firm_invites")
@@ -59,7 +73,22 @@ export async function POST(request: NextRequest, { params }: Params) {
     );
   }
 
-  const supabase = createSupabaseAdmin();
+  let supabase;
+
+  try {
+    supabase = createSupabaseAdmin();
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Server is not configured to accept firm invites.",
+      },
+      { status: 500 }
+    );
+  }
+
   const {
     data: { user },
     error: userError,

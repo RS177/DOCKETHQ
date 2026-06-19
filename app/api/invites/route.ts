@@ -39,7 +39,22 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const supabase = createSupabaseAdmin();
+  let supabase;
+
+  try {
+    supabase = createSupabaseAdmin();
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Server is not configured to create firm invites.",
+      },
+      { status: 500 }
+    );
+  }
+
   const {
     data: { user },
     error: userError,
