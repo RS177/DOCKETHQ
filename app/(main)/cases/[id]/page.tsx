@@ -323,6 +323,8 @@ export default function CaseDetailsPage() {
   const [hearingDate, setHearingDate] = useState("");
   const [note, setNote] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const [generatingReport, setGeneratingReport] = useState(false);
+  const [caseReport, setCaseReport] = useState<{ report: string; generatedAt: string } | null>(null);
 
   const fetchCase = useCallback(async () => {
     const { data } = await supabase
@@ -686,6 +688,56 @@ export default function CaseDetailsPage() {
     });
   }
 
+  async function generateCaseReport() {
+    if (!caseData) return;
+
+    setGeneratingReport(true);
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session?.access_token) {
+      setGeneratingReport(false);
+      notify({
+        title: "Login required",
+        description: "Log in again before generating a report.",
+        variant: "warning",
+      });
+      router.push(`/login?redirectTo=${encodeURIComponent(`/cases/${caseData.id}`)}`);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/cases/${caseData.id}/ai-report`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const result = (await response.json()) as {
+        report?: string;
+        generatedAt?: string;
+        error?: string;
+      };
+
+      if (!response.ok || !result.report || !result.generatedAt) {
+        throw new Error(result.error || "Could not generate the case report.");
+      }
+
+      setCaseReport({ report: result.report, generatedAt: result.generatedAt });
+      notify({
+        title: "Case report ready",
+        description: "Generated from this matter's saved record and timeline.",
+        variant: "success",
+      });
+    } catch (error) {
+      notify({
+        title: "Case report unavailable",
+        description: error instanceof Error ? error.message : "Could not generate the case report.",
+        variant: "error",
+      });
+    } finally {
+      setGeneratingReport(false);
+    }
+  }
   useEffect(() => {
     let ignore = false;
 
@@ -836,6 +888,18 @@ export default function CaseDetailsPage() {
               )}
               {refreshing ? "Refreshing..." : "Refresh Court Status"}
             </button>
+            <button
+              onClick={generateCaseReport}
+              disabled={generatingReport}
+              className="mt-3 inline-flex items-center gap-2 rounded-md border border-violet-400/30 bg-violet-400/10 px-4 py-2.5 text-sm font-semibold text-violet-100 transition hover:bg-violet-400/20 disabled:opacity-60"
+            >
+              {generatingReport ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <FileText className="h-4 w-4" />
+              )}
+              {generatingReport ? "Generating report..." : "Generate case report"}
+            </button>
             <p className="mt-4 text-sm capitalize text-stone-400">
               Verification: {verificationStatus(caseData)}
             </p>
@@ -843,6 +907,27 @@ export default function CaseDetailsPage() {
         </div>
       </section>
 
+      {caseReport && (
+        <section className="rounded-lg border border-violet-400/20 bg-violet-400/[0.04] p-6 shadow-sm">
+          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-violet-400/15 pb-4">
+            <div className="flex items-center gap-3">
+              <FileText className="h-5 w-5 text-violet-300" />
+              <div>
+                <h2 className="text-xl font-semibold">Case report</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Generated {formatDateTime(caseReport.generatedAt)} from the saved matter record.
+                </p>
+              </div>
+            </div>
+            <button onClick={() => setCaseReport(null)} className="text-sm font-medium text-muted-foreground transition hover:text-foreground">
+              Close
+            </button>
+          </div>
+          <article className="mt-5 whitespace-pre-wrap text-sm leading-7 text-foreground">
+            {caseReport.report}
+          </article>
+        </section>
+      )}
       <section className="grid gap-4 md:grid-cols-4">
         {[
           {

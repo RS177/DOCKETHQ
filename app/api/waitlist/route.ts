@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { error } = await supabase.from("waitlist").upsert(
+  const { error } = await supabase.from("waitlist_leads").upsert(
     {
       name,
       email,
