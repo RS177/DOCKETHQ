@@ -38,8 +38,8 @@ function reportFor(caseRecord: CaseRecord, events: CaseEvent[]) {
   if (caseRecord.verification_status === "sync_failed") followUps.push("The last court sync failed; verify the matter against the official court source.");
   if (!caseRecord.last_synced_at) followUps.push("Run a court-status refresh or mark the matter as manually verified.");
   const recentActivity = events.length ? events.map((event) => {
-    const detail = event.description ? ` — ${event.description}` : "";
-    return `- ${formatDate(event.occurred_at)} · ${event.title}${detail}`;
+    const detail = event.description ? ` ï¿½ ${event.description}` : "";
+    return `- ${formatDate(event.occurred_at)} ï¿½ ${event.title}${detail}`;
   }).join("\n") : "- No timeline activity has been recorded yet.";
   return `# Case report\n\n## Matter overview\n- **Matter:** ${title}\n- **CNR:** ${caseRecord.cnr_number || "Not recorded"}\n- **Court:** ${caseRecord.court_name || "Not recorded"}\n- **Judge / bench:** ${caseRecord.judge_name || "Not recorded"}\n\n## Current procedural posture\n- **Status:** ${status}\n- **Stage:** ${caseRecord.current_stage || "Not recorded"}\n- **Verification:** ${(caseRecord.verification_status || "unverified").replaceAll("_", " ")}\n- **Last court check:** ${formatDate(caseRecord.last_synced_at)} (${(caseRecord.last_sync_status || "not recorded").replaceAll("_", " ")})\n\n## Upcoming dates and risks\n- **Next hearing:** ${formatDate(hearing)}\n- ${dateRisk(hearing)}\n\n## Recent activity\n${recentActivity}\n\n## Recommended follow-ups\n${followUps.map((item) => `- ${item}`).join("\n")}\n\n---\nThis system-generated report organizes the saved DocketHQ record. Review the court record before relying on it.`;
 }
